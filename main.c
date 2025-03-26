@@ -59,4 +59,3 @@ affichageliste(nnoe,noeuds);
     free(noeuds);
 
    }
-
