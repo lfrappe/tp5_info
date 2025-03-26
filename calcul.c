@@ -102,9 +102,11 @@ matrices creation(int n, int m, char* nom,matrices ptr,char* type)
 double** creation_plein(int n, int m)
 {
 int i;
+//creation lignes
 double **mat= (double**)malloc(n*sizeof(double*));
 if (!mat) return NULL;
     for (i = 0; i < n; i++) {
+		//creation colonnes
         mat[i] = (double*)malloc(m*sizeof(double*));
         if (!mat[i]) return NULL;
     }
@@ -115,9 +117,11 @@ if (!mat) return NULL;
 double** creation_sym(int n)
 {
 int i;
+//creation lignes
 double **mat = (double**)malloc(n*sizeof(double*));
     if (!mat) return NULL;
     for (i = 0; i < n; i++) {
+		//creation colonnes
         mat[i] = (double*)malloc((n - i) * sizeof(double));
         if (!mat[i]) return NULL;
     }
@@ -127,31 +131,35 @@ double **mat = (double**)malloc(n*sizeof(double*));
 //fpub:Fonction destruction
 matrices destruction(matrices top, char* nom)
 {
-    matrices tmp = recherche(top, nom);
-    if (tmp == NULL) return top;
+	//recherche de la matrice
+	matrices tmp = recherche(top, nom);
+	if (tmp == NULL) return top;
 
-   
-    if (tmp == top) {
-        top = top->next;
-    }
-   
-    else {
-        matrices prev = top;
-        while (prev->next != tmp) {
-            prev = prev->next;
-        }
-        prev->next = tmp->next;
-    }
+    //cas ou la matrice est tete de chaine
+	if (tmp == top) {
+		top = top->next;
+	}
 
-   int i ;
-   for(i=0; i<tmp->n; i++){
-      free(tmp->mat[i]);
-   }
-   free(tmp->mat);
-   free(tmp);
-   tmp=NULL;
-   
-    return top;
+    //recherche de la matrice precedant la matrice a detruire dans la liste chainée
+	else {
+		matrices prev = top;
+		while (prev->next != tmp) {
+			prev = prev->next;
+		}
+	prev->next = tmp->next;
+}
+	
+	//destruction colonnes
+	int i ;
+	for(i=0; i<tmp->n; i++){
+		free(tmp->mat[i]);
+}
+	//destruction matrice
+	free(tmp->mat);
+	free(tmp);
+	tmp=NULL;
+	
+	return top;
 }
 
 //fpub:Fonction produit
@@ -211,4 +219,3 @@ void produit_sym(double** ta1, double** ta2, double** res, int n, int m2) {
         }
     }
 }
-
