@@ -108,14 +108,14 @@ matrices creation(int n, int m, char* nom,matrices ptr,char* type)
 double** creation_plein(int n, int m)
 {
 int i;
-
-//creation ///////lignes???????????/////////
+  
+//creation lignes
 double **mat= (double**)malloc(n*sizeof(double*));
 
 //verification malloc fonctionne
 if (!mat) return NULL;
 
-//creation ///////colones???????????/////////
+//creation colonnes
 for (i = 0; i < n; i++) {
 	mat[i] = (double*)malloc(m*sizeof(double*));
 	//verification malloc fonctionne
@@ -130,13 +130,13 @@ double** creation_sym(int n)
 {
 int i;
 
-//creation ///////lignes???????????/////////
+//creation lignes
 double **mat = (double**)malloc(n*sizeof(double*));
 
 //verification malloc fonctionne
 if (!mat) return NULL;
 
-//creation ///////colones???????????/////////
+//creation colonnes
 for (i = 0; i < n; i++) {
     mat[i] = (double*)malloc((n - i) * sizeof(double));
     //verification malloc fonctionne
@@ -149,31 +149,35 @@ for (i = 0; i < n; i++) {
 //fpub:Fonction destruction
 matrices destruction(matrices top, char* nom)
 {
-    matrices tmp = recherche(top, nom);
-    if (tmp == NULL) return top;
+	//recherche de la matrice
+	matrices tmp = recherche(top, nom);
+	if (tmp == NULL) return top;
 
-   
-    if (tmp == top) {
-        top = top->next;
-    }
-   
-    else {
-        matrices prev = top;
-        while (prev->next != tmp) {
-            prev = prev->next;
-        }
-        prev->next = tmp->next;
-    }
+    //cas ou la matrice est tete de chaine
+	if (tmp == top) {
+		top = top->next;
+	}
 
-   int i ;
-   for(i=0; i<tmp->n; i++){
-      free(tmp->mat[i]);
-   }
-   free(tmp->mat);
-   free(tmp);
-   tmp=NULL;
-   
-    return top;
+    //recherche de la matrice precedant la matrice a detruire dans la liste chainée
+	else {
+		matrices prev = top;
+		while (prev->next != tmp) {
+			prev = prev->next;
+		}
+	prev->next = tmp->next;
+}
+	
+	//destruction colonnes
+	int i ;
+	for(i=0; i<tmp->n; i++){
+		free(tmp->mat[i]);
+}
+	//destruction matrice
+	free(tmp->mat);
+	free(tmp);
+	tmp=NULL;
+	
+	return top;
 }
 
 //fpub:Fonction produit
