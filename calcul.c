@@ -89,14 +89,12 @@ matrices creation(int n, int m, char* nom,matrices ptr,char* type)
    matrices temp = malloc(sizeof(struct matrice));
    strcpy( temp->nom,nom);
    temp->n=n, temp->m=m;
-   
    //choix type matrice
    if (!strcmp(type, "plein")) {
         temp-> mat = creation_plein(n, m);
     } else if (!strcmp(type, "sym")) {
         temp-> mat = creation_sym(n);
     }
-    
    //inclusion dans la liste chainée
    temp->next= ptr ;
    ptr = temp;
@@ -108,13 +106,10 @@ matrices creation(int n, int m, char* nom,matrices ptr,char* type)
 double** creation_plein(int n, int m)
 {
 int i;
-  
 //creation lignes
 double **mat= (double**)malloc(n*sizeof(double*));
-
 //verification malloc fonctionne
 if (!mat) return NULL;
-
 //creation colonnes
 for (i = 0; i < n; i++) {
 	mat[i] = (double*)malloc(m*sizeof(double*));
@@ -129,20 +124,16 @@ for (i = 0; i < n; i++) {
 double** creation_sym(int n)
 {
 int i;
-
 //creation lignes
 double **mat = (double**)malloc(n*sizeof(double*));
-
 //verification malloc fonctionne
 if (!mat) return NULL;
-
 //creation colonnes
 for (i = 0; i < n; i++) {
     mat[i] = (double*)malloc((n - i) * sizeof(double));
     //verification malloc fonctionne
     if (!mat[i]) return NULL;
     }
-    
     return mat;
 }
 
@@ -152,12 +143,10 @@ matrices destruction(matrices top, char* nom)
 	//recherche de la matrice
 	matrices tmp = recherche(top, nom);
 	if (tmp == NULL) return top;
-
     //cas ou la matrice est tete de chaine
 	if (tmp == top) {
 		top = top->next;
 	}
-
     //recherche de la matrice precedant la matrice a detruire dans la liste chainée
 	else {
 		matrices prev = top;
@@ -166,7 +155,6 @@ matrices destruction(matrices top, char* nom)
 		}
 	prev->next = tmp->next;
 }
-	
 	//destruction colonnes
 	int i ;
 	for(i=0; i<tmp->n; i++){
@@ -187,7 +175,6 @@ matrices produit(char* tab1,char* tab2,char* nom,matrices ptr,char* type)
 	matrices ta1=NULL,ta2=NULL;
 	ta1=recherche(ptr,tab1);
 	ta2=recherche(ptr,tab2);
-	
 	//verifications qu'elles existent
 	if (ta1 == NULL || ta2 == NULL) {
 		printf("matrice n'existe pas\n");
