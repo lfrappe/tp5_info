@@ -134,8 +134,16 @@ struct noeud* entrenoeud(int nnoe)
 			scanf("%s",depeff);
 		}
 		noeuds[p].num=p+1;
+		//cas ou on demande un deplacement
+		if (strcmp(depeff,"d")==0){
 		printf("deplacement du noeud %d",p+1);
 		scanf("%d", &noeuds[p].dep);
+		}
+		//cas ou on demande un effort
+		else{
+		printf("effort du noeud %d",p+1);
+		scanf("%lf", &noeuds[p].eff);
+		}
 }
 return noeuds;
 }}
