@@ -117,6 +117,7 @@ return elements;
 //fpub: entrée par l'utilisateur des données des noeuds
 struct noeud* entrenoeud(int nnoe)
 {
+	char depeff[20];
 	int n=nnoe;
 	int p;
 	//creation du tableau noeud vide
@@ -124,12 +125,20 @@ struct noeud* entrenoeud(int nnoe)
 	noeuds= malloc(n*sizeof(struct noeud));
 	//entrée des données des noeuds
 	for ( p=0;p<n;p++){
+		//demande si on connait les deplacements ou efforts
+		printf("connait on le deplacement ou effort du noeud? (d/e)");
+		scanf("%s",depeff);
+		//boucle pour clarification en cas d'erreur de l'utilisateur
+		while (strcmp(depeff,"e")!=0 && strcmp(depeff,"d")!=0){
+			printf("tapez e pour effort ou d pour deplacement");
+			scanf("%s",depeff);
+		}
 		noeuds[p].num=p+1;
 		printf("deplacement du noeud %d",p+1);
 		scanf("%d", &noeuds[p].dep);
 }
 return noeuds;
-}
+}}
 
 //fpub: entrée par l'utilisateur de la taille des elements
 int tailleelm()
