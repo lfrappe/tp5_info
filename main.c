@@ -41,38 +41,38 @@ if (inc==1)
 
     //sous-matrices
     //Kfr
-    ptr=sous_matrice("K", *,*,*,*,"Kfr","sym");
-    affiche("Kfr");
+    ptr=sousmatrice("K", *,*,*,*,"Kfr","sym");
+    affichage("Kfr");
     
     //Kff
-    ptr=sous_matrice("K", *,*,*,*,"Kff","sym");
-    affiche("Kff");
+    ptr=sousmatrice("K", *,*,*,*,"Kff","sym");
+    affichage("Kff");
     
     //Ur
-    ptr=sous_vecteurU("U",*,*,*,*,"Ur","plein");
-    affiche("Ur");
+    ptr=sousvecteurU("U",*,*,*,*,"Ur","plein");
+    affichage("Ur");
     
     //Ff
-    ptr=sous_vecteurF("F",*,*,*,*,"Ff","plein");
-    affiche("Ff");
+    ptr=sousvecteurF("F",*,*,*,*,"Ff","plein");
+    affichage("Ff");
     
     //produit Kfr*Ur
     ptr=creation("E",*,*, "plein");
 	produit("Kfr", "Ur", "E");
     
-    //soustraction Ff-E (E=Kfr*UR)
-    ptr=soustraction(ptr, "Ff", "E", "B")
+    //difference Ff-E (E=Kfr*UR)
+    ptr=difference(ptr, "Ff", "E", "B?")
         
     //creation Uf
     ptr=creation("Uf",*,*,"plein");
 
     //resoudre systeme eq AX=B
-    resolution("Kff", "B?", "Uf");
-	affiche("Uf");
+    resolutioneq("Kff", "B?", "Uf");
+	affichage("Uf");
 
-    //assemblage nouveau U (u2?)
+    //assemblage nouveau U (u2??)
 
-    //besoin de ca? si oui ou
+    //besoin de ca? si oui mettre ou
     affecterresults("F",noeuds,ptr);
     
     //affichage
