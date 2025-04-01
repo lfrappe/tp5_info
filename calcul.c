@@ -251,11 +251,14 @@ struct matrice *sousmatrice_plein_vers_plein(struct matrice *K,int *r,int nbr_r,
 	struct matrice *Krf=creation (nom2, nbr_f, nbr_r, "plein");
 	
 	for(i=0;i<nbr_f;i++)
+		{
 		for(j=0;j<nbr_r;j++)
+			{
 
 				Krf->composante[i][j]=K->composante[f[i]][r[j]];
 				
 	return Krf;
+}}
 }
 
 
