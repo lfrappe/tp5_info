@@ -317,14 +317,14 @@ struct matrice* sousmatrice(char *nom1, int *r, int nbr_r, int *f,int nbr_f, cha
 
 
 
-//fpub : sous vecteur Ur
-struct matrice *sousvecteurU(char *nom1, int *r, int nbr_r, int* f, int nbr_f, char *nom2, char* type)
+//fpub : sous vecteur
+struct matrice *sousvecteur(char *nom1, int *r, int nbr, int* f, char *nom2, char* type)
 {
 	struct matrice *ptr1=recherche(nom1);
-	struct matrice *ptr2=creation(nom2, nbr_r, 1, "plein");
+	struct matrice *ptr2=creation(nom2, nbr, 1, "plein");
 	int i;
 	
-	for(i=0; i<nbr_r; i++)
+	for(i=0; i<nbr; i++)
 	{
 		ptr2->composante[i][0]=ptr1->composante[r[i]][0];
 	}
@@ -332,20 +332,6 @@ struct matrice *sousvecteurU(char *nom1, int *r, int nbr_r, int* f, int nbr_f, c
 }
 
 
-
-//fpub : sous vecteur Ff
-struct matrice *sousvecteurF(char *nom1, int *r, int nbr_r, int *f, int nbr_f, char *nom2, char *type)
-{
-	struct matrice *ptr1=recherche(nom1);
-	struct matrice *ptr2=creation(nom2, nbr_f, 1, "plein");
-	int i;
-	
-	for(i=0;i<nbr_f;i++)
-	{
-		ptr2->composante[i][0]=ptr1->composante[f[i]][0];
-	}
-	return ptr2;
-}
 
 //fpub : permet la résolution de l'équation AX=B
 void resolutioneq(char *nom1, char *nom2, char *nom3)
