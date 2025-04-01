@@ -294,7 +294,7 @@ struct matrice *sousmatrice_sym (struct matrice *K,int *f,int nbr_f,char* nom2)
 	
 	return Kff;
 
-//fonction publique : sous-matrice
+//fpub : sous-matrice
 struct matrice* sousmatrice(char *nom1, int *r, int nbr_r, int *f,int nbr_f, char *nom2, char *type)
 {
 	struct matrice* K = recherche(nom1);
@@ -314,7 +314,7 @@ struct matrice* sousmatrice(char *nom1, int *r, int nbr_r, int *f,int nbr_f, cha
 
 
 
-//fonction publique : sous vecteur Ur
+//fpub : sous vecteur Ur
 struct matrice *sousvecteurU(char *nom1, int *r, int nbr_r, int* f, int nbr_f, char *nom2, char* type)
 {
 	struct matrice *ptr1=recherche(nom1);
@@ -330,7 +330,7 @@ struct matrice *sousvecteurU(char *nom1, int *r, int nbr_r, int* f, int nbr_f, c
 
 
 
-//fonction publique : sous vecteur Ff
+//fpub : sous vecteur Ff
 struct matrice *sousvecteurF(char *nom1, int *r, int nbr_r, int *f, int nbr_f, char *nom2, char *type)
 {
 	struct matrice *ptr1=recherche(nom1);
@@ -344,14 +344,14 @@ struct matrice *sousvecteurF(char *nom1, int *r, int nbr_r, int *f, int nbr_f, c
 	return ptr2;
 }
 
-//fonction publique : permet la résolution de l'équation AX=B
+//fpub : permet la résolution de l'équation AX=B
 void resolutioneq(char *nom1, char *nom2, char *nom3)
 {
 	struct matrice *ptr1= recherche(nom1);
 	struct matrice *ptr2=recherche(nom2);
 	struct matrice *ptr3=creation(nom3, ptr1->n, 1, "plein");
 	if(ptr1!=NULL)
-	{
+		{
 			if (!strcmp(ptr1->type, "plein"))
 			solveplein(ptr1->composante, ptr2->composante, ptr3->composante, ptr1->n, ptr2->m);
 		else
