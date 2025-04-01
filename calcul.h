@@ -53,9 +53,8 @@ matrice *sousmatrice_sym_vers_plein(struct matrice *K, int *r,int nbr_r,int *f,i
 matrice *sousmatrice_sym (struct matrice *K,int *f,int nbr_f,char* nom2);
 matrice* sousmatrice(char *nom1,int *r,int nbr_r,int *f,int nbr_f,char *nom2,char *type);
 
-//sous-vecteurs
-matrice *sousvecteurU(char *nom1, int *r, int nbr_r, int* f, int nbr_f, char *nom2, char* type);
-matrice *sousvecteurF(char *nom1, int *r, int nbr_r, int *f, int nbr_f, char *nom2, char *type);
+//sous-vecteur
+matrice *sousvecteur(char *nom1, int *r, int nbr, int* f, char *nom2, char* type);
 
 //res system eq AX=B
 void resolutioneq(char *nom1, char *nom2, char *nom3);
