@@ -20,6 +20,42 @@ struct noeud* noeuds = entrenoeud(nnoe);
 struct element* elements = entreelmt(nelt,nnoe);
 matrices ptr = NULL;
 
+printf("Le problème contient-il des déplacements inconnus? Répondez 1 pour OUI, 2 pour NON");
+scanf("%d"; &inc);
+
+    // 1-OUI, INCONNUES //
+if (inc==1)
+{
+    //noeuds
+
+    //elements
+
+    //choix type k
+
+    //
+
+    //assemblage de K
+    ptr = assemblageK(nnoe, nelt, elements, "K", ptr,type);
+    affichage(recherche(ptr, "K"),type);
+
+    //assemblage de U
+    ptr = assemblageU(nnoe, noeuds, "U", ptr);
+    affichage(recherche(ptr, "U"),"plein");
+    
+    //assemblage de F
+    ptr = produit("K", "U", "F", ptr,type);
+    affichage(recherche(ptr, "F"),"plein");
+
+    //sous-matrices
+    //Kfr
+    //Kff
+    
+}
+
+    // 2-NON, PAS INCONNUES //
+else
+{
+
 //Assemblage de K
 
 ptr = assemblageK(nnoe, nelt, elements, "K", ptr,type);
@@ -32,10 +68,8 @@ affichage(recherche(ptr, "U"),"plein");
 
 //Calcul de F
 
-
 ptr = produit("K", "U", "F", ptr,type);
 affichage(recherche(ptr, "F"),"plein");
-
 
 affecterresults("F",noeuds,ptr);
 
@@ -57,5 +91,5 @@ affichageliste(nnoe,noeuds);
 
     free(elements);
     free(noeuds);
-
+}
    }
