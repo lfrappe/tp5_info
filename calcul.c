@@ -223,3 +223,70 @@ void produit_sym(double** ta1, double** ta2, double** res, int n, int m2) {
         }
     }
 }
+
+//ajouts TD5
+
+//fonction publique : sous-matrice
+struct matrice* sousmatrice(char *nom1, int *r, int nbr_r, int *f,int nbr_f, char *nom2, char *type)
+{
+	struct matrice* K = recherche(nom1);
+	struct matrice *Krf;
+	
+	if(!strcmp(type,"plein")&&!strcmp(K->type,"plein"))
+		Krf= sous_matrice_plein_vers_plein(K, r, nbr_r, f, nbr_f, nom2);
+		
+	else if(!strcmp(type,"plein")&&!strcmp(K->type,"sym"))
+		Krf = sous_matrice_sym_vers_plein(K, r, nbr_r, f, nbr_f, nom2);
+		
+	else if (!strcmp(type,"sym"))
+		Krf = sous_matrice_sym(K, f, nbr_f, nom2);	
+	
+	return Krf;
+}
+
+
+
+//fonction publique : sous vecteur Ur
+struct matrice *sousvecteurU(char *nom1, int *r, int nbr_r, int* f, int nbr_f, char *nom2, char* type)
+{
+	struct matrice *ptr1=recherche(nom1);
+	struct matrice *ptr2=creation(nom2, nbr_r, 1, "plein");
+	int i;
+	
+	for(i=0; i<nbr_r; i++)
+	{
+		ptr2->composante[i][0]=ptr1->composante[r[i]][0];
+	}
+	return ptr2;
+}
+
+
+
+//fonction publique : sous vecteur Ff
+struct matrice *sousvecteurF(char *nom1, int *r, int nbr_r, int *f, int nbr_f, char *nom2, char *type)
+{
+	struct matrice *ptr1=recherche(nom1);
+	struct matrice *ptr2=creation(nom2, nbr_f, 1, "plein");
+	int i;
+	
+	for(i=0;i<nbr_f;i++)
+	{
+		ptr2->composante[i][0]=ptr1->composante[f[i]][0];
+	}
+	return ptr2;
+}
+
+//fonction publique : permet la résolution de l'équation AX=B
+void resolution(char *nom1, char *nom2, char *nom3)
+{
+	struct matrice *ptr1= recherche(nom1);
+	struct matrice *ptr2=recherche(nom2);
+	struct matrice *ptr3=creation(nom3, ptr1->n, 1, "plein");
+	if(ptr1!=NULL)
+	{
+			if (!strcmp(ptr1->type, "plein"))
+			solveplein(ptr1->composante, ptr2->composante, ptr3->composante, ptr1->n, ptr2->m);
+		else
+			solvesym(ptr1->composante, ptr2->composante, ptr3->composante, ptr1->n, ptr2->m);
+	}
+}
