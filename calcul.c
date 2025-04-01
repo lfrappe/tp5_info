@@ -226,6 +226,74 @@ void produit_sym(double** ta1, double** ta2, double** res, int n, int m2) {
 
 //ajouts TD5
 
+//fpub : soustraction C = A - B 
+struct matrice* soustraction(struct matrice* ptr, char* nom_A, char* nom_B, char* nom_C)
+{
+	int i,j;
+	struct matrice *soustraction=creation(nom_C,recherche(nom_A)->n,recherche(nom_B)->m,"plein");
+	
+    for (i=0;i<soustraction->n;i++)
+    {
+        for (j=0;j<soustraction->m;j++)
+        {
+            soustraction->composante[i][j]=recherche(nom_A)->composante[i][j]-recherche(nom_B)->composante[i][j];
+		}
+	}
+	soustraction->next=ptr;
+	
+	return soustraction;
+}
+
+//fpriv : extraction plein vers plein 
+struct matrice *sousmatrice_plein_vers_plein(struct matrice *K,int *r,int nbr_r,int *f,int nbr_f,char *nom2)
+{
+	int i,j;
+	struct matrice *Krf=creation (nom2, nbr_f, nbr_r, "plein");
+	
+	for(i=0;i<nbr_f;i++)
+		for(j=0;j<nbr_r;j++)
+
+				Krf->composante[i][j]=K->composante[f[i]][r[j]];
+				
+	return Krf;
+}
+
+
+//fpriv : extraction sym vers plein
+struct matrice *sousmatrice_sym_vers_plein(struct matrice *K, int *r,int nbr_r,int *f,int nbr_f, char* nom2)
+{
+	int i,j;
+	struct matrice *Krf=creation(nom2, nbr_f, nbr_r, "plein");
+	for(i=0;i<nbr_f;i++)
+		for(j=0;j<nbr_r;j++)
+		{
+			if(r[i]<=f[j])
+				Krf->composante[i][j]=K->composante[r[j]][f[i]];
+			else
+				Krf->composante[i][j]=K->composante[f[i]][r[j]];
+		}
+	
+	return Krf;
+}
+
+
+//fpriv : extraction sym
+struct matrice *sousmatrice_sym (struct matrice *K,int *f,int nbr_f,char* nom2)
+{
+	int i,j;
+	struct matrice *Kff=creation(nom2, nbr_f, nbr_f, "sym");
+	
+	for(i=0;i<nbr_f;i++)
+		for(j=0;j<nbr_f;j++)
+		{
+			if(f[i]<=f[j])
+				Kff->composante[i][j]=K->composante[f[i]][f[j]];
+			else
+				Kff->composante[i][j]=K->composante[f[j]][f[i]];
+		}
+	
+	return Kff;
+
 //fonction publique : sous-matrice
 struct matrice* sousmatrice(char *nom1, int *r, int nbr_r, int *f,int nbr_f, char *nom2, char *type)
 {
@@ -233,13 +301,13 @@ struct matrice* sousmatrice(char *nom1, int *r, int nbr_r, int *f,int nbr_f, cha
 	struct matrice *Krf;
 	
 	if(!strcmp(type,"plein")&&!strcmp(K->type,"plein"))
-		Krf= sous_matrice_plein_vers_plein(K, r, nbr_r, f, nbr_f, nom2);
+		Krf= sousmatrice_plein_vers_plein(K, r, nbr_r, f, nbr_f, nom2);
 		
 	else if(!strcmp(type,"plein")&&!strcmp(K->type,"sym"))
-		Krf = sous_matrice_sym_vers_plein(K, r, nbr_r, f, nbr_f, nom2);
+		Krf = sousmatrice_sym_vers_plein(K, r, nbr_r, f, nbr_f, nom2);
 		
 	else if (!strcmp(type,"sym"))
-		Krf = sous_matrice_sym(K, f, nbr_f, nom2);	
+		Krf = sousmatrice_sym(K, f, nbr_f, nom2);	
 	
 	return Krf;
 }
