@@ -113,9 +113,25 @@ struct element* entreelmt(int nelt, int nnoe)
 }
 return elements;
 }
-
-//fpub: entrée par l'utilisateur des données des noeuds
+//fpub: entrée par l'utilisateur des données des noeuds (version sans inconnues)
 struct noeud* entrenoeud(int nnoe)
+{
+	int n=nnoe;
+	int p;
+	//creation du tableau noeud vide
+	struct noeud* noeuds=NULL;
+	noeuds= malloc(n*sizeof(struct noeud));
+	//entrée des données des noeuds
+	for ( p=0;p<n;p++){
+		noeuds[p].num=p+1;
+		printf("deplacement du noeud %d",p+1);
+		scanf("%d", &noeuds[p].dep);
+}
+return noeuds;
+}
+
+//fpub: entrée par l'utilisateur des données des noeuds (version inconnues)
+struct noeud* entrenoeud2(int nnoe)
 {
 	char depeff[20];
 	int n=nnoe;
