@@ -23,6 +23,7 @@ struct noeud
 struct element* entreelmt(int nelt, int nnoe);
 //entrée noeuds
 struct noeud* entrenoeud(int nnoe);
+struct noeud* entrenoeud2(int nnoe);
 // assemblage K
 matrices assemblageK(int nnoe, int nelt, struct element *elements, char* nmK,matrices ptr,char* symp);
 // assemblage U
