@@ -10,15 +10,6 @@
 
 int main()
 {
-//choix type matrice
-char type[20];
-choixmatrice(type);
-
-int nnoe = taillenoeud(), nelt = tailleelm();
-
-struct noeud* noeuds = entrenoeud(nnoe);
-struct element* elements = entreelmt(nelt,nnoe);
-matrices ptr = NULL;
 
 printf("Le problème contient-il des déplacements inconnus? Répondez 1 pour OUI, 2 pour NON");
 scanf("%d"; &inc);
@@ -26,13 +17,15 @@ scanf("%d"; &inc);
     // 1-OUI, INCONNUES //
 if (inc==1)
 {
-    //noeuds
+    //choix type matrice
+    char type[20];
+    choixmatrice(type);
 
-    //elements
-
-    //choix type k
-
-    //
+    //entree noeuds et elements
+    int nnoe = taillenoeud(), nelt = tailleelm();
+    struct noeud* noeuds = entrenoeud2(nnoe);
+    struct element* elements = entreelmt(nelt,nnoe);
+    matrices ptr = NULL;
 
     //assemblage de K
     ptr = assemblageK(nnoe, nelt, elements, "K", ptr,type);
@@ -48,45 +41,95 @@ if (inc==1)
 
     //sous-matrices
     //Kfr
+    ptr=sous_matrice("K", *,*,*,*,"Kfr","sym");
+    affiche("Kfr");
+    
     //Kff
+    ptr=sous_matrice("K", *,*,*,*,"Kff","sym");
+    affiche("Kff");
+    
+    //Ur
+    ptr=sous_vecteurU("U",*,*,*,*,"Ur","plein");
+    affiche("Ur");
+    
+    //Ff
+    ptr=sous_vecteurF("F",*,*,*,*,"Ff","plein");
+    affiche("Ff");
+    
+    //produit Kfr*Ur
+    ptr=creation("E",*,*, "plein");
+	produit("Kfr", "Ur", "E");
+    
+    //soustraction Ff-E (E=Kfr*UR)
+    ptr=soustraction(ptr, "Ff", "E", "B")
+        
+    //creation Uf
+    ptr=creation("Uf",*,*,"plein");
+
+    //resoudre systeme eq AX=B
+    resolution("Kff", "B?", "Uf");
+	affiche("Uf");
+
+    //assemblage nouveau U (u2?)
+
+    //besoin de ca? si oui ou
+    affecterresults("F",noeuds,ptr);
+    
+    //affichage
+    affichageliste(nnoe,noeuds);
+
+    //suppressions
+    ptr = destruction(ptr, "K");
+    ptr = destruction(ptr, "U");
+    ptr = destruction(ptr, "F");
     
 }
 
     // 2-NON, PAS INCONNUES //
+    
 else
 {
+    //choix type matrice
+    char type[20];
+    choixmatrice(type);
 
-//Assemblage de K
+    //entree noeuds et elements
+    int nnoe = taillenoeud(), nelt = tailleelm();
+    struct noeud* noeuds = entrenoeud(nnoe);
+    struct element* elements = entreelmt(nelt,nnoe);
+    matrices ptr = NULL;
 
-ptr = assemblageK(nnoe, nelt, elements, "K", ptr,type);
-affichage(recherche(ptr, "K"),type);
+    //Assemblage de K
 
-//Assemblage de U
+    ptr = assemblageK(nnoe, nelt, elements, "K", ptr,type);
+    affichage(recherche(ptr, "K"),type);
 
-ptr = assemblageU(nnoe, noeuds, "U", ptr);
-affichage(recherche(ptr, "U"),"plein");
+    //Assemblage de U
 
-//Calcul de F
+    ptr = assemblageU(nnoe, noeuds, "U", ptr);
+    affichage(recherche(ptr, "U"),"plein");
 
-ptr = produit("K", "U", "F", ptr,type);
-affichage(recherche(ptr, "F"),"plein");
+    //Calcul de F
 
-affecterresults("F",noeuds,ptr);
+    ptr = produit("K", "U", "F", ptr,type);
+    affichage(recherche(ptr, "F"),"plein");
 
-affichageliste(nnoe,noeuds);
+    affecterresults("F",noeuds,ptr);
+
+    affichageliste(nnoe,noeuds);
 
     ptr = destruction(ptr, "K");
     ptr = destruction(ptr, "U");
     ptr = destruction(ptr, "F");
    
    
-//autre maniere de faire les destructions, peut etre mieux
+    //autre maniere de faire les destructions, peut etre mieux
    
     //~ while (ptr != NULL) {
     //~ matrices temp = ptr;
     //~ ptr = ptr->next;
     //~ ptr = destruction(ptr, temp->nom);
-//~ }
+    //~ }
    
 
     free(elements);
