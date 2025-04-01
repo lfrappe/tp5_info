@@ -226,22 +226,22 @@ void produit_sym(double** ta1, double** ta2, double** res, int n, int m2) {
 
 //ajouts TD5
 
-//fpub : soustraction C = A - B 
-struct matrice* soustraction(struct matrice* ptr, char* nom_A, char* nom_B, char* nom_C)
+//fpub : difference C = A - B 
+struct matrice* difference(struct matrice* ptr, char* nom_A, char* nom_B, char* nom_C)
 {
 	int i,j;
-	struct matrice *soustraction=creation(nom_C,recherche(nom_A)->n,recherche(nom_B)->m,"plein");
+	struct matrice *difference=creation(nom_C,recherche(nom_A)->n,recherche(nom_B)->m,"plein");
 	
-    for (i=0;i<soustraction->n;i++)
+    for (i=0;i<difference->n;i++)
     {
-        for (j=0;j<soustraction->m;j++)
+        for (j=0;j<difference->m;j++)
         {
-            soustraction->composante[i][j]=recherche(nom_A)->composante[i][j]-recherche(nom_B)->composante[i][j];
+            difference->composante[i][j]=recherche(nom_A)->composante[i][j]-recherche(nom_B)->composante[i][j];
 		}
 	}
-	soustraction->next=ptr;
+	difference->next=ptr;
 	
-	return soustraction;
+	return difference;
 }
 
 //fpriv : extraction plein vers plein 
