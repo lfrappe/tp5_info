@@ -345,7 +345,7 @@ struct matrice *sousvecteurF(char *nom1, int *r, int nbr_r, int *f, int nbr_f, c
 }
 
 //fonction publique : permet la résolution de l'équation AX=B
-void resolution(char *nom1, char *nom2, char *nom3)
+void resolutioneq(char *nom1, char *nom2, char *nom3)
 {
 	struct matrice *ptr1= recherche(nom1);
 	struct matrice *ptr2=recherche(nom2);
