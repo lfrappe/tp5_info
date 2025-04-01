@@ -49,11 +49,11 @@ if (inc==1)
     affichage("Kff");
     
     //Ur
-    ptr=sousvecteurU("U",*,*,*,*,"Ur","plein");
+    ptr=sousvecteur("U",*,*,*,*,"Ur","plein");
     affichage("Ur");
     
     //Ff
-    ptr=sousvecteurF("F",*,*,*,*,"Ff","plein");
+    ptr=sousvecteur("F",*,*,*,*,"Ff","plein");
     affichage("Ff");
     
     //produit Kfr*Ur
