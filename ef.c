@@ -8,7 +8,7 @@
 #include "calcul.h"
 
 //fpub:affectation des resultats de F dans les noeuds
-void affecterresults(char* F, struct noeud *noeuds,matrices ptr)
+void affecterresults(char* F, struct noeud *noeuds, matrices ptr)
    {
 	int p;
 	//recherche F
@@ -34,12 +34,12 @@ void affichageliste(int nnoe,struct noeud *noeuds)
 }
 
 //fpub:construction de K
-matrices assemblageK(int nnoe, int nelt, struct element *elements, char* nmK,matrices ptr,char* symp)
+matrices assemblageK(int nnoe, int nelt, struct element *elements, char* nomK, matrices ptr,char* type)
 {
 	int p, i, j;
-	matrices K = creation(nnoe,nnoe,nmK,ptr,symp);
+	matrices K = creation(nnoe,nnoe,nomK,ptr,type);
 	//cas ou K est matrice pleine
-	if(!strcmp(symp,"plein")){
+	if(!strcmp(type,"plein")){
 		for (p=0; p<nelt; p++){
 			//definition i et j
 			i = elements[p].k[0] - 1;
@@ -51,7 +51,7 @@ matrices assemblageK(int nnoe, int nelt, struct element *elements, char* nmK,mat
 			K->mat[j][j] += elements[p].raid;
 }}
 	//cas ou K est matrice symetrique
-	else if(!strcmp(symp,"sym")){
+	else if(!strcmp(type,"sym")){
 		int min, max;
 		for (p=0; p<nelt; p++){
 			//definition i et j
@@ -76,10 +76,10 @@ return K;
 }
 
 //fpub:construction de U
-matrices assemblageU(int nnoe, struct noeud *noeuds, char* nmU,matrices ptr)
+matrices assemblageU(int nnoe, struct noeud *noeuds, char* nomU, matrices ptr)
    {
 	int p;
-	matrices U = creation(nnoe,1,nmU,ptr,"plein");
+	matrices U = creation(nnoe,1,nomU,ptr,"plein");
 	//copie données des noeuds dans U
 	for (p=0; p<nnoe; p++)
     {
