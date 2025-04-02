@@ -58,6 +58,6 @@ matrices sousmatrice(matrices ptr,char *nom1, int *r, int nbr_r, int *f,int nbr_
 matrices sousvecteur(matrices ptr,char *nom1, int *r, int nbr, char *nom2);
 
 //res system eq AX=B
-void resolutioneq(char *nom1, char *nom2, char *nom3);
+void resolutioneq(matrices ptr, char *nom1, char *nom2, char *nom3);
 
 #endif /* calcul_h */
