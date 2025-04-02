@@ -10,9 +10,10 @@
 
 int main()
 {
+	int inc;
 
 printf("Le problème contient-il des déplacements inconnus? Répondez 1 pour OUI, 2 pour NON");
-scanf("%d"; &inc);
+scanf("%d", &inc);
 
     // 1-OUI, INCONNUES //
 if (inc==1)
@@ -29,46 +30,44 @@ if (inc==1)
 
     //assemblage de K
     ptr = assemblageK(nnoe, nelt, elements, "K", ptr,type);
-    affichage(recherche(ptr, "K"),type);
+    affichage(recherche(ptr, "K"));
 
     //assemblage de U
     ptr = assemblageU(nnoe, noeuds, "U", ptr);
-    affichage(recherche(ptr, "U"),"plein");
+    affichage(recherche(ptr, "U"));
     
     //assemblage de F
-    ptr = produit("K", "U", "F", ptr,type);
-    affichage(recherche(ptr, "F"),"plein");
+    ptr = produit("K", "U", "F", ptr);
+    affichage(recherche(ptr, "F"));
 
     //sous-matrices
     //Kfr
-    ptr=sousmatrice("K", *,*,*,*,"Kfr","sym");
-    affichage("Kfr");
+    ptr = sousmatrice(ptr,"K",r,nbr_r,f,nbr_f,"Kfr");
+    affichage(recherche(ptr, "Kfr"));
     
     //Kff
-    ptr=sousmatrice("K", *,*,*,*,"Kff","sym");
-    affichage("Kff");
+    ptr=sousmatrice(ptr,"K",r,nbr_r,f, nbr_f,"Kff");
+    affichage(recherche(ptr, "Kff"));
     
     //Ur
-    ptr=sousvecteur("U",*,*,*,*,"Ur","plein");
-    affichage("Ur");
+    ptr=sousvecteur(ptr,"U",r,nbr_r,"Ur");
+    affichage(recherche(ptr, "Ur"));
     
     //Ff
-    ptr=sousvecteur("F",*,*,*,*,"Ff","plein");
-    affichage("Ff");
+    ptr=sousvecteur(ptr,"F",r,nbr_r,"Ff");
+    affichage(recherche(ptr, "Ff"));
     
     //produit Kfr*Ur
-    ptr=creation("E",*,*, "plein");
-	produit("Kfr", "Ur", "E");
+	produit("Kfr", "Ur", "E",ptr);
     
     //difference Ff-E (E=Kfr*UR)
-    ptr=difference(ptr, "Ff", "E", "B?")
-        
-    //creation Uf
-    ptr=creation("Uf",*,*,"plein");
-
+    ptr=difference("Ff", "E", "B",ptr); //B?
+    
     //resoudre systeme eq AX=B
-    resolutioneq("Kff", "B?", "Uf");
-	affichage("Uf");
+    //creation Uf
+    ptr=creation("Uf",ptr,"plein");
+    resolutioneq("Kff", "B", "Uf"); //B?
+	affichage((recherche(ptr, "Ff"));
 
     //assemblage nouveau U (u2??)
 
@@ -102,17 +101,17 @@ else
     //Assemblage de K
 
     ptr = assemblageK(nnoe, nelt, elements, "K", ptr,type);
-    affichage(recherche(ptr, "K"),type);
+    affichage(recherche(ptr, "K"));
 
     //Assemblage de U
 
     ptr = assemblageU(nnoe, noeuds, "U", ptr);
-    affichage(recherche(ptr, "U"),"plein");
+    affichage(recherche(ptr, "U"));
 
     //Calcul de F
 
-    ptr = produit("K", "U", "F", ptr,type);
-    affichage(recherche(ptr, "F"),"plein");
+    ptr = produit("K", "U", "F", ptr);
+    affichage(recherche(ptr, "F"));
 
     affecterresults("F",noeuds,ptr);
 
