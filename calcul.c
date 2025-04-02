@@ -1,4 +1,4 @@
-//calcul.c//
+mat//calcul.c//
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -232,6 +232,9 @@ void produit_sym(double** ta1, double** ta2, double** res, int n, int m2) {
 //
 //
 
+
+//fpub : difference C = A - B 
+
 matrices difference(char* tab1, char* tab2,char* nom,matrices ptr)
 {  
    int i,j;
@@ -248,7 +251,9 @@ if (ta1->n != ta2->n || ta1->m != ta2->m) {
     return ptr;
 }
 
+
    matrices res = creation(ta1->n, ta2->m, nom,ptr,"plein");
+
    for(i = 0; i < ta1->n; i++)
   {
     for(j = 0; j < ta2->m; j++)
@@ -271,7 +276,8 @@ matrices sousmatrice_plein_vers_plein(matrices K,int *r,int nbr_r,int *f,int nbr
 		for(j=0;j<nbr_r;j++)
 			{
 
-				Krf->composante[i][j]=K->composante[f[i]][r[j]];
+				Krf->mat[i][j]=K->mat[f[i]][r[j]];
+
 			}}	
 	return Krf;
 
@@ -287,9 +293,9 @@ matrices sousmatrice_sym_vers_plein(matrices K, int *r,int nbr_r,int *f,int nbr_
 		for(j=0;j<nbr_r;j++)
 		{
 			if(r[i]<=f[j])
-				Krf->composante[i][j]=K->composante[r[j]][f[i]];
+				Krf->mat[i][j]=K->mat[r[j]][f[i]];
 			else
-				Krf->composante[i][j]=K->composante[f[i]][r[j]];
+				Krf->mat[i][j]=K->mat[f[i]][r[j]];
 		}
 	
 	return Krf;
@@ -306,9 +312,9 @@ matrices sousmatrice_sym (matrices K,int *f,int nbr_f,char* nom2)
 		for(j=0;j<nbr_f;j++)
 		{
 			if(f[i]<=f[j])
-				Kff->composante[i][j]=K->composante[f[i]][f[j]];
+				Kff->mat[i][j]=K->mat[f[i]][f[j]];
 			else
-				Kff->composante[i][j]=K->composante[f[j]][f[i]];
+				Kff->mat[i][j]=K->mat[f[j]][f[i]];
 		}
 	
 	return Kff;
@@ -342,7 +348,7 @@ matrices sousvecteur(char *nom1, int *r, int nbr, int* f, char *nom2, char* type
 	
 	for(i=0; i<nbr; i++)
 	{
-		ptr2->composante[i][0]=ptr1->composante[r[i]][0];
+		ptr2->mat[i][0]=ptr1->mat[r[i]][0];
 	}
 	return ptr2;
 }
@@ -358,9 +364,9 @@ void resolutioneq(char *nom1, char *nom2, char *nom3)
 	if(ptr1!=NULL)
 		{
 			if (!strcmp(ptr1->type, "plein"))
-			solveplein(ptr1->composante, ptr2->composante, ptr3->composante, ptr1->n, ptr2->m);
+			solveplein(ptr1->mat, ptr2->mat, ptr3->mat, ptr1->n, ptr2->m);
 		else
-			solvesym(ptr1->composante, ptr2->composante, ptr3->composante, ptr1->n, ptr2->m);
+			solvesym(ptr1->mat, ptr2->mat, ptr3->mat, ptr1->n, ptr2->m);
 	}
 }
 
