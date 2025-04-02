@@ -55,7 +55,7 @@ matrices sousmatrice_sym (matrices ptr,char* nomK,int *f,int nbr_f,char* nom2);
 matrices sousmatrice(matrices ptr,char *nom1, int *r, int nbr_r, int *f,int nbr_f, char *nom2, char *type);
 
 //sous-vecteur
-matrices sousvecteur(char *nom1, int *r, int nbr, int* f, char *nom2, char* type);
+matrices sousvecteur(matrices ptr,char *nom1, int *r, int nbr, int* f, char *nom2, char* type);
 
 //res system eq AX=B
 void resolutioneq(char *nom1, char *nom2, char *nom3);
