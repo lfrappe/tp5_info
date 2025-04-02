@@ -232,7 +232,6 @@ void produit_sym(double** ta1, double** ta2, double** res, int n, int m2) {
 //
 //
 
-//fpub : difference C = A - B 
 matrices difference(char* tab1, char* tab2,char* nom,matrices ptr)
 {  
    int i,j;
@@ -249,7 +248,7 @@ if (ta1->n != ta2->n || ta1->m != ta2->m) {
     return ptr;
 }
 
-   matrices res = creation(ta1->n, ta2->m, nom,ptr);
+   matrices res = creation(ta1->n, ta2->m, nom,ptr,"plein");
    for(i = 0; i < ta1->n; i++)
   {
     for(j = 0; j < ta2->m; j++)
