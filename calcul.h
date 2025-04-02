@@ -48,10 +48,10 @@ void affichage_sym(double** mat, int n);
 matrices destruction(matrices top, char* nom);
 
 //sous-matrices
-matrices sousmatrice_plein_vers_plein(matrices *K,int *r,int nbr_r,int *f,int nbr_f,char *nom2);
-matrices sousmatrice_sym_vers_plein(matrices *K, int *r,int nbr_r,int *f,int nbr_f, char* nom2);
-matrices sousmatrice_sym (matrices *K,int *f,int nbr_f,char* nom2);
-matrices sousmatrice(char *nom1,int *r,int nbr_r,int *f,int nbr_f,char *nom2,char *type);
+matrices sousmatrice_plein_vers_plein(matrices ptr,char* nomK,int *r,int nbr_r,int *f,int nbr_f,char *nom2);
+matrices sousmatrice_sym_vers_plein(matrices ptr,char* nomK, int *r,int nbr_r,int *f,int nbr_f, char* nom2);
+matrices sousmatrice_sym (matrices ptr,char* nomK,int *f,int nbr_f,char* nom2);
+matrices sousmatrice(matrices ptr,char *nom1, int *r, int nbr_r, int *f,int nbr_f, char *nom2, char *type);
 
 //sous-vecteur
 matrices sousvecteur(char *nom1, int *r, int nbr, int* f, char *nom2, char* type);
