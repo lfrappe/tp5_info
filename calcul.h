@@ -32,7 +32,7 @@ matrices produit(char* tab1, char* tab2,char* nom,matrices ptr,char* type);
 
 //somme ??
 //difference
-matrices difference(struct matrice* ptr, char* nom_A, char* nom_B, char* nom_C);
+matrices difference(char* tab1, char* tab2,char* nom,matrices ptr);
 
 //fpriv:cas plein et symetrique
 void produit_plein(double** ta1, double** ta2, double** res, int n, int m, int m2);
@@ -48,9 +48,9 @@ void affichage_sym(double** mat, int n);
 matrices destruction(matrices top, char* nom);
 
 //sous-matrices
-matrices sousmatrice_plein_vers_plein(struct matrice *K,int *r,int nbr_r,int *f,int nbr_f,char *nom2);
-matrices sousmatrice_sym_vers_plein(struct matrice *K, int *r,int nbr_r,int *f,int nbr_f, char* nom2);
-matrices sousmatrice_sym (struct matrice *K,int *f,int nbr_f,char* nom2);
+matrices sousmatrice_plein_vers_plein(matrices *K,int *r,int nbr_r,int *f,int nbr_f,char *nom2);
+matrices sousmatrice_sym_vers_plein(matrices *K, int *r,int nbr_r,int *f,int nbr_f, char* nom2);
+matrices sousmatrice_sym (matrices *K,int *f,int nbr_f,char* nom2);
 matrices sousmatrice(char *nom1,int *r,int nbr_r,int *f,int nbr_f,char *nom2,char *type);
 
 //sous-vecteur
