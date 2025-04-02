@@ -1,9 +1,9 @@
 //calcul.c//
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include "calcul.h"
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <string.h>
+//~ #include "calcul.h"
 
 //fpub:choix du type de matrice pour K
 char* choixmatrice(char* c)
@@ -257,8 +257,9 @@ struct matrice *sousmatrice_plein_vers_plein(struct matrice *K,int *r,int nbr_r,
 
 				Krf->composante[i][j]=K->composante[f[i]][r[j]];
 				
-	return Krf;
+	
 }}
+return Krf;
 }
 
 
@@ -296,7 +297,8 @@ struct matrice *sousmatrice_sym (struct matrice *K,int *f,int nbr_f,char* nom2)
 		}
 	
 	return Kff;
-
+   }
+      
 //fpub : sous-matrice
 struct matrice* sousmatrice(char *nom1, int *r, int nbr_r, int *f,int nbr_f, char *nom2, char *type)
 {
