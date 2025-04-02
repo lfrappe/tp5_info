@@ -67,17 +67,17 @@ void affichage_sym(double** mat, int n) {
 }
 
 //fpub:Fonction recherche
-matrices recherche(matrices temp,char* nm)
+matrices recherche(matrices temp,char* nom)
 {
 	//parcour de la liste chainée pour trouver le nom de la matrice recherchée
     while (temp!=NULL){
-		if(!strcmp(temp->nom,nm)){
+		if(!strcmp(temp->nom,nom)){
 			return(temp);
       }
       temp=temp->next;
    }
    //verification que la matrice existe
-   printf("pas de matrice %s",nm);
+   printf("pas de matrice %s",nom);
    
    return(temp);
 }
