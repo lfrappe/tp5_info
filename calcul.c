@@ -9,14 +9,14 @@
 char* choixmatrice(char* c)
 {
 do{
-printf("Choisissez le type de matrice (plein/sym) : ");
+printf("Choisissez le type de matrice K (plein/sym) : ");
 scanf("%s",c);
    }while((strcmp(c,"plein")!=0) && (strcmp(c,"sym")!=0));
    return c;
 }
 
 //fpub:Fonctions affichage
-void affichage(matrices tab1,char* type)
+void affichage(matrices tab1)
 {  
 	//verification que la matrice existe
     if (tab1 == NULL)
@@ -67,17 +67,17 @@ void affichage_sym(double** mat, int n) {
 }
 
 //fpub:Fonction recherche
-matrices recherche(matrices temp,char* nom)
+matrices recherche(matrices temp,char* nm)
 {
 	//parcour de la liste chainée pour trouver le nom de la matrice recherchée
     while (temp!=NULL){
-		if(!strcmp(temp->nom,nom)){
+		if(!strcmp(temp->nom,nm)){
 			return(temp);
       }
       temp=temp->next;
    }
    //verification que la matrice existe
-   printf("pas de matrice %s",nom);
+   printf("pas de matrice %s",nm);
    
    return(temp);
 }
@@ -89,6 +89,8 @@ matrices creation(int n, int m, char* nom,matrices ptr,char* type)
    matrices temp = malloc(sizeof(struct matrice));
    strcpy( temp->nom,nom);
    temp->n=n, temp->m=m;
+   strcpy( temp->type,type);
+   
    //choix type matrice
    if (!strcmp(temp->type, "plein")) {
         temp-> mat = creation_plein(n, m);
@@ -169,7 +171,7 @@ matrices destruction(matrices top, char* nom)
 }
 
 //fpub:Fonction produit
-matrices produit(char* tab1,char* tab2,char* nom,matrices ptr,char* type)
+matrices produit(char* tab1,char* tab2,char* nom,matrices ptr)
 {  
 	//assignation a ta1 et ta2 des matrices qu'on multiplie
 	matrices ta1=NULL,ta2=NULL;
@@ -321,7 +323,7 @@ matrices sousmatrice_sym (matrices ptr,char* nomK,int *f,int nbr_f,char* nom2)
 }
 
 //fpub : sous-matrice
-matrices sousmatrice(matrices ptr,char *nomK, int *r, int nbr_r, int *f,int nbr_f, char *nom2, char *type)
+matrices sousmatrice(matrices ptr,char *nomK, int *r, int nbr_r, int *f,int nbr_f, char *nom2)
 {
 	matrices K = recherche(ptr,nomK);
 	matrices Krf;
@@ -339,13 +341,13 @@ matrices sousmatrice(matrices ptr,char *nomK, int *r, int nbr_r, int *f,int nbr_
 }
 
 //fpub : sous vecteur
-matrices sousvecteur(matrices ptr,char *nom1, int *r, int nbr, int* f, char *nom2, char* type)
+matrices sousvecteur(matrices ptr,char *nom1, int *r, int nbr_r, char *nom2)
 {
 	matrices ptr1=recherche(ptr,nom1);
-	matrices ptr2=creation(nbr, 1,nom2,ptr ,"plein");
+	matrices ptr2=creation(nbr_r, 1,nom2,ptr ,"plein");
 	int i;
 	
-	for(i=0; i<nbr; i++)
+	for(i=0; i<nbr_r; i++)
 	{
 		ptr2->mat[i][0]=ptr1->mat[r[i]][0];
 	}
