@@ -162,7 +162,7 @@ struct noeud* entrenoeud2(int nnoe)
 		}
 }
 return noeuds;
-}}
+}
 
 //fpub: entrée par l'utilisateur de la taille des elements
 int tailleelm()
