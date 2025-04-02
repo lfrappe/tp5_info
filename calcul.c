@@ -234,7 +234,6 @@ void produit_sym(double** ta1, double** ta2, double** res, int n, int m2) {
 
 
 //fpub : difference C = A - B 
-
 matrices difference(char* tab1, char* tab2,char* nom,matrices ptr)
 {  
    int i,j;
@@ -266,10 +265,11 @@ if (ta1->n != ta2->n || ta1->m != ta2->m) {
 }
 
 //fpriv : extraction plein vers plein 
-matrices sousmatrice_plein_vers_plein(matrices K,int *r,int nbr_r,int *f,int nbr_f,char *nom2)
+matrices sousmatrice_plein_vers_plein(matrices ptr,char* nomK,int *r,int nbr_r,int *f,int nbr_f,char *nom2)
 {
 	int i,j;
-	matrices Krf=creation (nom2, nbr_f, nbr_r, "plein");
+  matrices K=recherche(ptr, nomK);
+	matrices Krf=creation(nbr_f, nbr_r, nom2,ptr, "plein");
 	
 	for(i=0;i<nbr_f;i++)
 		{
@@ -285,10 +285,11 @@ matrices sousmatrice_plein_vers_plein(matrices K,int *r,int nbr_r,int *f,int nbr
 
 
 //fpriv : extraction sym vers plein
-matrices sousmatrice_sym_vers_plein(matrices K, int *r,int nbr_r,int *f,int nbr_f, char* nom2)
+matrices sousmatrice_sym_vers_plein(matrices ptr,char* nomK, int *r,int nbr_r,int *f,int nbr_f, char* nom2)
 {
 	int i,j;
-	matrices Krf=creation(nom2, nbr_f, nbr_r, "plein");
+   matrices K=recherche(ptr, nomK);
+	matrices Krf=creation(nbr_f, nbr_r, nom2,ptr, "plein");
 	for(i=0;i<nbr_f;i++)
 		for(j=0;j<nbr_r;j++)
 		{
@@ -303,10 +304,11 @@ matrices sousmatrice_sym_vers_plein(matrices K, int *r,int nbr_r,int *f,int nbr_
 
 
 //fpriv : extraction sym
-matrices sousmatrice_sym (matrices K,int *f,int nbr_f,char* nom2)
+matrices sousmatrice_sym (matrices ptr,char* nomK,int *f,int nbr_f,char* nom2)
 {
 	int i,j;
-	matrices Kff=creation(nom2, nbr_f, nbr_f, "sym");
+   matrices K=recherche(ptr,nomK);
+	matrices Kff=creation(nbr_f, nbr_f, nom2,ptr, "sym");
 	
 	for(i=0;i<nbr_f;i++)
 		for(j=0;j<nbr_f;j++)
@@ -320,14 +322,14 @@ matrices sousmatrice_sym (matrices K,int *f,int nbr_f,char* nom2)
 	return Kff;
 }
 //fpub : sous-matrice
-matrices sousmatrice(char *nom1, int *r, int nbr_r, int *f,int nbr_f, char *nom2, char *type)
+matrices sousmatrice(matrices ptr,char *nom1, int *r, int nbr_r, int *f,int nbr_f, char *nom2, char *type)
 {
-	matrices K = recherche(nom1);
+	matrices K = recherche(ptr,nom1);
 	matrices Krf;
 	
-	if(!strcmp(type,"plein")&&!strcmp(K->type,"plein"))
+	if(!strcmp(type,"plein")&&!strcmp(type,"plein"))
 		Krf= sousmatrice_plein_vers_plein(K, r, nbr_r, f, nbr_f, nom2);
-		
+   
 	else if(!strcmp(type,"plein")&&!strcmp(K->type,"sym"))
 		Krf = sousmatrice_sym_vers_plein(K, r, nbr_r, f, nbr_f, nom2);
 		
@@ -340,10 +342,10 @@ matrices sousmatrice(char *nom1, int *r, int nbr_r, int *f,int nbr_f, char *nom2
 
 
 //fpub : sous vecteur
-matrices sousvecteur(char *nom1, int *r, int nbr, int* f, char *nom2, char* type)
+matrices sousvecteur(matrices ptr,char *nom1, int *r, int nbr, int* f, char *nom2, char* type)
 {
-	matrices ptr1=recherche(nom1);
-	matrices ptr2=creation(nom2, nbr, 1, "plein");
+	matrices ptr1=recherche(ptr,nom1);
+	matrices ptr2=creation(nbr, 1,nom2,ptr ,"plein");
 	int i;
 	
 	for(i=0; i<nbr; i++)
@@ -355,18 +357,17 @@ matrices sousvecteur(char *nom1, int *r, int nbr, int* f, char *nom2, char* type
 
 
 
-//fpub : permet la résolution de l'équation AX=B
-void resolutioneq(char *nom1, char *nom2, char *nom3)
-{
-	matrices ptr1= recherche(nom1);
-	matrices ptr2=recherche(nom2);
-	matrices ptr3=creation(nom3, ptr1->n, 1, "plein");
-	if(ptr1!=NULL)
-		{
-			if (!strcmp(ptr1->type, "plein"))
-			solveplein(ptr1->mat, ptr2->mat, ptr3->mat, ptr1->n, ptr2->m);
-		else
-			solvesym(ptr1->mat, ptr2->mat, ptr3->mat, ptr1->n, ptr2->m);
-	}
-}
-
+////fpub : permet la résolution de l'équation AX=B
+//void resolutioneq(matrices ptr, char *nom1, char *nom2, char *nom3)
+//{
+	//matrices ptr1= recherche(ptr,nom1);
+	//matrices ptr2=recherche(ptr,nom2);
+	//matrices ptr3=creation( ptr1->n,1, nom3,ptr, "plein");
+	//if(ptr1!=NULL)
+		//{
+			//if (!strcmp(ptr1->type, "plein"))
+			//solveplein(ptr1->mat, ptr2->mat, ptr3->mat, ptr1->n, ptr2->m);
+		//else
+			//solvesym(ptr1->mat, ptr2->mat, ptr3->mat, ptr1->n, ptr2->m);
+	//}
+//}
