@@ -6,6 +6,7 @@
 struct matrice
    {
       char nom[20];
+      char type[20];
       int n;
       int m;
       double **mat;
