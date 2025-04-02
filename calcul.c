@@ -26,11 +26,11 @@ void affichage(matrices tab1,char* type)
       }
       
     //verification type matrice
-    if (!strcmp(type, "plein"))
+    if (!strcmp(tab1->type, "plein"))
    {
 		affichage_plein(tab1->mat, tab1->n, tab1->m);
   }
-    else if (!strcmp(type, "sym")) {
+    else if (!strcmp(tab1->type, "sym")) {
 		affichage_sym(tab1->mat, tab1->n);
   }
      //saut de lignes pour la présentation
@@ -90,9 +90,9 @@ matrices creation(int n, int m, char* nom,matrices ptr,char* type)
    strcpy( temp->nom,nom);
    temp->n=n, temp->m=m;
    //choix type matrice
-   if (!strcmp(type, "plein")) {
+   if (!strcmp(temp->type, "plein")) {
         temp-> mat = creation_plein(n, m);
-    } else if (!strcmp(type, "sym")) {
+    } else if (!strcmp(temp->type, "sym")) {
         temp-> mat = creation_sym(n);
     }
    //inclusion dans la liste chainée
@@ -187,10 +187,10 @@ matrices produit(char* tab1,char* tab2,char* nom,matrices ptr,char* type)
 }
    //creation en fonction du type
 	matrices res = creation(ta1->n, ta2->m, nom,ptr,"plein");
-	if (!strcmp(type, "plein")) {
+	if (!strcmp(ta1->type, "plein")) {
 		produit_plein(ta1->mat, ta2->mat, res->mat, ta1->n, ta1->m, ta2->m);
 }
-	else if (!strcmp(type, "sym")) {
+	else if (!strcmp(ta1->type, "sym")) {
 		produit_sym(ta1->mat, ta2->mat, res->mat, ta1->n, ta2->m);
 }
 return res;
@@ -326,13 +326,13 @@ matrices sousmatrice(matrices ptr,char *nomK, int *r, int nbr_r, int *f,int nbr_
 	matrices K = recherche(ptr,nomK);
 	matrices Krf;
 	
-	if(!strcmp(type,"plein")&&!strcmp(type,"plein"))
+	if(!strcmp(K->type,"plein")&&!strcmp(K->type,"plein"))
 		Krf= sousmatrice_plein_vers_plein(ptr,nomK, r, nbr_r, f, nbr_f, nom2);
    
-	else if(!strcmp(type,"plein")&&!strcmp(K->type,"sym"))
+	else if(!strcmp(K->type,"plein")&&!strcmp(K->type,"sym"))
 		Krf = sousmatrice_sym_vers_plein(ptr,nomK, r, nbr_r, f, nbr_f, nom2);
 		
-	else if (!strcmp(type,"sym"))
+	else if (!strcmp(K->type,"sym"))
 		Krf = sousmatrice_sym(ptr,nomK, f, nbr_f, nom2);	
 	
 	return Krf;
