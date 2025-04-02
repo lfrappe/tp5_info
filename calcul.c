@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "calcul.h"
+#include "libmat.h"
 
 //fpub:choix du type de matrice pour K
 char* choixmatrice(char* c)
@@ -356,17 +357,17 @@ matrices sousvecteur(matrices ptr,char *nom1, int *r, int nbr_r, char *nom2)
 
 
 
-////fpub : permet la résolution de l'équation AX=B
-//void resolutioneq(matrices ptr, char *nom1, char *nom2, char *nom3)
-//{
-	//matrices ptr1= recherche(ptr,nom1);
-	//matrices ptr2=recherche(ptr,nom2);
-	//matrices ptr3=creation( ptr1->n,1, nom3,ptr, "plein");
-	//if(ptr1!=NULL)
-		//{
-			//if (!strcmp(ptr1->type, "plein"))
-			//solveplein(ptr1->mat, ptr2->mat, ptr3->mat, ptr1->n, ptr2->m);
-		//else
-			//solvesym(ptr1->mat, ptr2->mat, ptr3->mat, ptr1->n, ptr2->m);
-	//}
-//}
+//fpub : permet la résolution de l'équation AX=B
+void resolutioneq(matrices ptr, char *nom1, char *nom2, char *nom3)
+{
+	matrices ptr1= recherche(ptr,nom1);
+	matrices ptr2=recherche(ptr,nom2);
+	matrices ptr3=creation( ptr1->n,1, nom3,ptr, "plein");
+	if(ptr1!=NULL)
+		{
+			if (!strcmp(ptr1->type, "plein"))
+			solveplein(ptr1->mat, ptr2->mat, ptr3->mat, ptr1->n, ptr2->m);
+		else
+			solvesym(ptr1->mat, ptr2->mat, ptr3->mat, ptr1->n, ptr2->m);
+	}
+}
