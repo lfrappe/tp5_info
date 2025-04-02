@@ -1,9 +1,9 @@
 //calcul.c//
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include "calcul.h"
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <string.h>
+//~ #include "calcul.h"
 
 //fpub:choix du type de matrice pour K
 char* choixmatrice(char* c)
@@ -222,4 +222,130 @@ void produit_sym(double** ta1, double** ta2, double** res, int n, int m2) {
             }
         }
     }
+}
+
+//ajouts TD5
+
+//fpub : difference C = A - B 
+struct matrice* difference(struct matrice* ptr, char* nom_A, char* nom_B, char* nom_C)
+{
+	int i,j;
+	struct matrice *difference=creation(nom_C,recherche(nom_A)->n,recherche(nom_B)->m,"plein");
+	
+    for (i=0;i<difference->n;i++)
+    {
+        for (j=0;j<difference->m;j++)
+        {
+            difference->composante[i][j]=recherche(nom_A)->composante[i][j]-recherche(nom_B)->composante[i][j];
+		}
+	}
+	difference->next=ptr;
+	
+	return difference;
+}
+
+//fpriv : extraction plein vers plein 
+struct matrice *sousmatrice_plein_vers_plein(struct matrice *K,int *r,int nbr_r,int *f,int nbr_f,char *nom2)
+{
+	int i,j;
+	struct matrice *Krf=creation (nom2, nbr_f, nbr_r, "plein");
+	
+	for(i=0;i<nbr_f;i++)
+		{
+		for(j=0;j<nbr_r;j++)
+			{
+
+				Krf->composante[i][j]=K->composante[f[i]][r[j]];
+				
+	
+}}
+return Krf;
+}
+
+
+//fpriv : extraction sym vers plein
+struct matrice *sousmatrice_sym_vers_plein(struct matrice *K, int *r,int nbr_r,int *f,int nbr_f, char* nom2)
+{
+	int i,j;
+	struct matrice *Krf=creation(nom2, nbr_f, nbr_r, "plein");
+	for(i=0;i<nbr_f;i++)
+		for(j=0;j<nbr_r;j++)
+		{
+			if(r[i]<=f[j])
+				Krf->composante[i][j]=K->composante[r[j]][f[i]];
+			else
+				Krf->composante[i][j]=K->composante[f[i]][r[j]];
+		}
+	
+	return Krf;
+}
+
+
+//fpriv : extraction sym
+struct matrice *sousmatrice_sym (struct matrice *K,int *f,int nbr_f,char* nom2)
+{
+	int i,j;
+	struct matrice *Kff=creation(nom2, nbr_f, nbr_f, "sym");
+	
+	for(i=0;i<nbr_f;i++)
+		for(j=0;j<nbr_f;j++)
+		{
+			if(f[i]<=f[j])
+				Kff->composante[i][j]=K->composante[f[i]][f[j]];
+			else
+				Kff->composante[i][j]=K->composante[f[j]][f[i]];
+		}
+	
+	return Kff;
+   }
+      
+//fpub : sous-matrice
+struct matrice* sousmatrice(char *nom1, int *r, int nbr_r, int *f,int nbr_f, char *nom2, char *type)
+{
+	struct matrice* K = recherche(nom1);
+	struct matrice *Krf;
+	
+	if(!strcmp(type,"plein")&&!strcmp(K->type,"plein"))
+		Krf= sousmatrice_plein_vers_plein(K, r, nbr_r, f, nbr_f, nom2);
+		
+	else if(!strcmp(type,"plein")&&!strcmp(K->type,"sym"))
+		Krf = sousmatrice_sym_vers_plein(K, r, nbr_r, f, nbr_f, nom2);
+		
+	else if (!strcmp(type,"sym"))
+		Krf = sousmatrice_sym(K, f, nbr_f, nom2);	
+	
+	return Krf;
+}
+
+
+
+//fpub : sous vecteur
+struct matrice *sousvecteur(char *nom1, int *r, int nbr, int* f, char *nom2, char* type)
+{
+	struct matrice *ptr1=recherche(nom1);
+	struct matrice *ptr2=creation(nom2, nbr, 1, "plein");
+	int i;
+	
+	for(i=0; i<nbr; i++)
+	{
+		ptr2->composante[i][0]=ptr1->composante[r[i]][0];
+	}
+	return ptr2;
+}
+
+
+
+//fpub : permet la résolution de l'équation AX=B
+void resolutioneq(char *nom1, char *nom2, char *nom3)
+{
+	struct matrice *ptr1= recherche(nom1);
+	struct matrice *ptr2=recherche(nom2);
+	struct matrice *ptr3=creation(nom3, ptr1->n, 1, "plein");
+	if(ptr1!=NULL)
+		{
+			if (!strcmp(ptr1->type, "plein"))
+			solveplein(ptr1->composante, ptr2->composante, ptr3->composante, ptr1->n, ptr2->m);
+		else
+			solvesym(ptr1->composante, ptr2->composante, ptr3->composante, ptr1->n, ptr2->m);
+	}
 }
