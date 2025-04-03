@@ -66,7 +66,7 @@ if (inc==1)
     //resoudre systeme eq AX=B
 
     resolutioneq(ptr,"Kff", "B", "Uf"); 
-	affichage((recherche(ptr, "Ff"));
+	affichage(recherche(ptr, "Ff"));
 
     //assemblage nouveau U (u2??)
 
