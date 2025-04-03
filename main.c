@@ -64,12 +64,13 @@ if (inc==1)
     ptr=difference("Ff", "E", "B",ptr); 
     
     //resoudre systeme eq AX=B
-
     resolutioneq(ptr,"Kff", "B", "Uf"); 
 	affichage(recherche(ptr, "Ff"));
 
     //assemblage nouveau U (u2??)
-
+    ptr=assemblageU2(ptr,"Uf", "U",f,nbr_f);
+    affichage(recherche(ptr, "U"));
+    
     //besoin de ca? si oui mettre ou
     affecterresults("F",noeuds,ptr);
     
