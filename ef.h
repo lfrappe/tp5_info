@@ -36,6 +36,7 @@ void affichageliste(int nnoe,struct noeud *noeuds);
 int tailleelm();
 //entrée taille noeuds
 int taillenoeud();
-
+//assemblage U2
+void assemblageU2(matrices ptr, char *Uf, char *U, int *f, int nbr_f);
 
 #endif /* ef_h */
