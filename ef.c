@@ -136,6 +136,16 @@ struct noeud* entrenoeud2(int nnoe)
 	char depeff[20];
 	int n=nnoe;
 	int p;
+	//tentative structure r et f 
+	struct donnees RF=NULL;
+	donnees= malloc(sizeof(struct donnees));
+	int *f= (int*)malloc(nnoe*sizeof(int));
+	int *r= (int*)malloc(nnoe*sizeof(int));
+
+
+
+
+	
 	//creation du tableau noeud vide
 	struct noeud* noeuds=NULL;
 	noeuds= malloc(n*sizeof(struct noeud));
