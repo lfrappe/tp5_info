@@ -58,15 +58,14 @@ if (inc==1)
     affichage(recherche(ptr, "Ff"));
     
     //produit Kfr*Ur
-	produit("Kfr", "Ur", "E",ptr);
+    produit("Kfr", "Ur", "E",ptr);
     
     //difference Ff-E (E=Kfr*UR)
-    ptr=difference("Ff", "E", "B",ptr); //B?
+    ptr=difference("Ff", "E", "B",ptr); 
     
     //resoudre systeme eq AX=B
-    //creation Uf
-    ptr=creation("Uf",ptr,"plein");
-    resolutioneq("Kff", "B", "Uf"); //B?
+
+    resolutioneq(ptr,"Kff", "B", "Uf"); 
 	affichage((recherche(ptr, "Ff"));
 
     //assemblage nouveau U (u2??)
