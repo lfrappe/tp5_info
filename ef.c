@@ -159,6 +159,7 @@ struct noeud* entrenoeud2(int nnoe)
 		else{
 		printf("effort du noeud %d",p+1);
 		scanf("%lf", &noeuds[p].eff);
+		noeuds[p].dep=0;
 		}
 }
 return noeuds;
@@ -180,4 +181,17 @@ int taillenoeud()
 	printf("nombre de noeuds");
 	scanf("%d", &n);
 	return n;
+}
+
+//fpub: construction de U2
+void assemblageU2(matrices ptr, char *Uf, char *U, int *f, int nbr_f)
+{
+	matrices ptr1=recherche(ptr, "U");
+	matrices ptr2=recherche(ptr, "Uf");
+	int i;
+	
+	for (i=0;i<nbr_f;i++)
+	{
+		ptr1->mat[f[i]][0]=ptr2->mat[i][0];
+	}
 }
