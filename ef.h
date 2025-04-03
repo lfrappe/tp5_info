@@ -19,6 +19,14 @@ struct noeud
       double eff;
 };
 
+struct donnee
+{
+int nbr_r;
+int nbr_f;
+int* r;
+int* f;
+};
+
 //entrée elements
 struct element* entreelmt(int nelt, int nnoe);
 //entrée noeuds
