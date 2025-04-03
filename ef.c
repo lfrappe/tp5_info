@@ -136,13 +136,16 @@ struct noeud* entrenoeud2(int nnoe)
 	char depeff[20];
 	int n=nnoe;
 	int p;
+
+	
 	//tentative structure r et f 
-	struct donnees RF=NULL;
+	struct donnees RF=NULL;  //////////////////////////////////a deplacer!!!!!!!! sinon ca garde pas en memoire
 	donnees= malloc(sizeof(struct donnees));
-	int *f= (int*)malloc(nnoe*sizeof(int));
-	int *r= (int*)malloc(nnoe*sizeof(int));
+	int *ftemp= (int*)malloc(nnoe*sizeof(int));
+	int *rtemp= (int*)malloc(nnoe*sizeof(int));
 
-
+	RF.nbr_r=0
+	RF.nbr_f=0
 
 
 	
@@ -164,14 +167,23 @@ struct noeud* entrenoeud2(int nnoe)
 		if (strcmp(depeff,"d")==0){
 		printf("deplacement du noeud %d",p+1);
 		scanf("%d", &noeuds[p].dep);
+
+		
+		rtemp[nbr_r]=p
+		RF.nbr_r+=1
 		}
 		//cas ou on demande un effort
 		else{
 		printf("effort du noeud %d",p+1);
 		scanf("%lf", &noeuds[p].eff);
 		noeuds[p].dep=0;
+
+		ftemp[nbr_f]=p
+		RF.nbr_f+=1
 		}
 }
+	RF.f=ftemp
+	RF.r=rtemp
 return noeuds;
 }
 
