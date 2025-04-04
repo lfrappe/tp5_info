@@ -19,10 +19,19 @@ struct noeud
       double eff;
 };
 
+typedef struct donnee
+{
+int nbr_r;
+int nbr_f;
+int* r;
+int* f;
+}donnee;
+
 //entrée elements
 struct element* entreelmt(int nelt, int nnoe);
 //entrée noeuds
 struct noeud* entrenoeud(int nnoe);
+struct noeud* entrenoeud2(int nnoe, struct donnee *RF);
 // assemblage K
 matrices assemblageK(int nnoe, int nelt, struct element *elements, char* nmK,matrices ptr,char* symp);
 // assemblage U
@@ -35,6 +44,7 @@ void affichageliste(int nnoe,struct noeud *noeuds);
 int tailleelm();
 //entrée taille noeuds
 int taillenoeud();
-
+//assemblage U2
+matrices assemblageU2(matrices ptr, char *Uf, char *U, int *f, int nbr_f);
 
 #endif /* ef_h */
