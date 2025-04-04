@@ -15,7 +15,7 @@ libef.a: ef.o
 	ranlib libef.a
 
 main.exe: main.c libcalcul.a libef.a libmat.a
-	gcc -o main.exe main.c -L. -lcalcul -lef -lm
+	gcc -o main.exe main.c -L. -lcalcul libmat.a -lef -lm -no-pie
 
 clean:
 	rm -rf *.o *.a main.exe
