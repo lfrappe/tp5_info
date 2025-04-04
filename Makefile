@@ -1,6 +1,6 @@
 all: main.exe
 
-calcul.o: calcul.c calcul.h
+calcul.o: calcul.c calcul.h libmat.h
 	gcc -c calcul.c
 
 ef.o: ef.c ef.h calcul.h
@@ -14,7 +14,7 @@ libef.a: ef.o
 	ar cr libef.a ef.o
 	ranlib libef.a
 
-main.exe: main.c libcalcul.a libef.a
+main.exe: main.c libcalcul.a libef.a libmat.a
 	gcc -o main.exe main.c -L. -lcalcul -lef -lm
 
 clean:
