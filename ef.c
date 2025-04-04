@@ -153,11 +153,11 @@ struct noeud* entrenoeud2(int nnoe, struct donnee *RF)
 	//entrée des données des noeuds
 	for ( p=0;p<n;p++){
 		//demande si on connait les deplacements ou efforts
-		printf("connait on le deplacement ou effort du noeud? (d/e)");
+		printf("connait on le deplacement ou effort du noeud %d? (d/e)",p+1);
 		scanf("%s",depeff);
 		//boucle pour clarification en cas d'erreur de l'utilisateur
 		while (strcmp(depeff,"e")!=0 && strcmp(depeff,"d")!=0){
-			printf("tapez e pour effort ou d pour deplacement");
+			printf("tapez e pour effort ou d pour deplacement du noeud %d",p+1);
 			scanf("%s",depeff);
 		}
 		noeuds[p].num=p+1;
@@ -186,6 +186,20 @@ struct noeud* entrenoeud2(int nnoe, struct donnee *RF)
 return noeuds;
 }
 
+//fpub: assemblage Ff
+matrices assemblageFf(matrices ptr, int nbr_f, int *f, struct noeud* noeuds)
+{int i;
+matrices Ff=creation(nbr_f, 1,"Ff",ptr ,"plein");
+	for (i=0;i<nbr_f;i++)
+{
+	Ff->mat[i][0]= noeuds[f[i]].eff;
+}
+	
+	
+	
+	return Ff;
+}	
+
 //fpub: entrée par l'utilisateur de la taille des elements
 int tailleelm()
 {  
@@ -207,8 +221,8 @@ int taillenoeud()
 //fpub: construction de U2
 matrices assemblageU2(matrices ptr, char *Uf, char *U, int *f, int nbr_f)
 {
-	matrices ptr1=recherche(ptr, "U");
-	matrices ptr2=recherche(ptr, "Uf");
+	matrices ptr1=recherche(ptr, U);
+	matrices ptr2=recherche(ptr, Uf);
 	matrices ptr3=creation(ptr1->n, ptr1->m, "U2", ptr, ptr1->type);
 	int i;
 	
