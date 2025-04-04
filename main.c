@@ -39,10 +39,6 @@ if (inc==1)
     //assemblage de U
     ptr = assemblageU(nnoe, noeuds, "U", ptr);
     affichage(recherche(ptr, "U"));
-    
-    //assemblage de F
-    ptr = produit("K", "U", "F", ptr);
-    affichage(recherche(ptr, "F"));
 
     //sous-matrices
     //Kfr
@@ -50,30 +46,37 @@ if (inc==1)
     affichage(recherche(ptr, "Kfr"));
     
     //Kff
-    ptr=sousmatrice(ptr,"K",RF->r,RF->nbr_r,RF->f, RF->nbr_f,"Kff");
+    ptr=sousmatrice(ptr,"K",RF->f,RF->nbr_f,RF->f, RF->nbr_f,"Kff");
     affichage(recherche(ptr, "Kff"));
     
     //Ur
     ptr=sousvecteur(ptr,"U",RF->r,RF->nbr_r,"Ur");
     affichage(recherche(ptr, "Ur"));
     
-    //Ff
-    ptr=sousvecteur(ptr,"F",RF->r,RF->nbr_r,"Ff");
+    //assemblage de Ff
+    ptr=assemblageFf( ptr,  RF->nbr_f,  RF->f, noeuds);
     affichage(recherche(ptr, "Ff"));
     
     //produit Kfr*Ur
-    produit("Kfr", "Ur", "E",ptr);
+    ptr=produit("Kfr", "Ur", "E",ptr);
+    affichage(recherche(ptr, "E"));
     
     //difference Ff-E (E=Kfr*UR)
-    ptr=difference("Ff", "E", "B",ptr); 
+    ptr=difference("Ff", "E", "B",ptr);
+    affichage(recherche(ptr, "B"));
+
     
     //resoudre systeme eq AX=B
-    resolutioneq(ptr,"Kff", "B", "Uf"); 
-	affichage(recherche(ptr, "Ff"));
+    ptr=resolutioneq(ptr,"Kff", "B", "Uf"); 
+	affichage(recherche(ptr, "Uf"));
 
     //assemblage nouveau U (u2??)
     ptr=assemblageU2(ptr,"Uf", "U",RF->f,RF->nbr_f);
-    affichage(recherche(ptr, "U"));
+    affichage(recherche(ptr, "U2"));
+    
+    //assemblage de F
+    ptr = produit("K", "U2", "F", ptr);
+    affichage(recherche(ptr, "F"));
     
     //besoin de ca? si oui mettre ou
     affecterresults("F",noeuds,ptr);
@@ -121,18 +124,15 @@ else
 
     affichageliste(nnoe,noeuds);
 
-    ptr = destruction(ptr, "K");
-    ptr = destruction(ptr, "U");
-    ptr = destruction(ptr, "F");
+
    
+    //destructions
    
-    //autre maniere de faire les destructions, peut etre mieux
-   
-    //~ while (ptr != NULL) {
-    //~ matrices temp = ptr;
-    //~ ptr = ptr->next;
-    //~ ptr = destruction(ptr, temp->nom);
-    //~ }
+    while (ptr != NULL) {
+    matrices temp = ptr;
+    ptr = ptr->next;
+    ptr = destruction(ptr, temp->nom);
+     }
    
 
     free(elements);
