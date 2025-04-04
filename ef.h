@@ -46,5 +46,8 @@ int tailleelm();
 int taillenoeud();
 //assemblage U2
 matrices assemblageU2(matrices ptr, char *Uf, char *U, int *f, int nbr_f);
+//asemblage Ff
+matrices assemblageFf(matrices ptr, int nbr_f, int *f, struct noeud* noeuds);
+
 
 #endif /* ef_h */
