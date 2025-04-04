@@ -6,7 +6,7 @@
 #include "calcul.h"
 #include "libmat.h"
 
-//fpub:choix du type de matrice pour K
+//fpub: choix du type de matrice pour K
 char* choixmatrice(char* c)
 {
 do{
@@ -16,7 +16,7 @@ scanf("%s",c);
    return c;
 }
 
-//fpub:Fonctions affichage
+//fpub: fonctions affichage
 void affichage(matrices tab1)
 {  
 	//verification que la matrice existe
@@ -40,7 +40,7 @@ void affichage(matrices tab1)
      return;
 }
 
-//fpriv:affichage matrice pleine
+//fpriv: affichage matrice pleine
 void affichage_plein(double** mat, int n, int m) {
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < m; j++)
@@ -52,7 +52,7 @@ void affichage_plein(double** mat, int n, int m) {
     }
 }
 
-//fpriv:affichage matrice symetriques
+//fpriv: affichage matrice symetriques
 void affichage_sym(double** mat, int n) {
 	for (int i = 0; i < n; i++) {
 		for (int j = 0; j < n; j++){
@@ -67,7 +67,7 @@ void affichage_sym(double** mat, int n) {
     }
 }
 
-//fpub:Fonction recherche
+//fpub: fonction recherche
 matrices recherche(matrices temp,char* nm)
 {
 	//parcour de la liste chainée pour trouver le nom de la matrice recherchée
@@ -83,7 +83,7 @@ matrices recherche(matrices temp,char* nm)
    return(temp);
 }
 
-//fpub:Fonction création matrice
+//fpub: fonction création matrice
 matrices creation(int n, int m, char* nom,matrices ptr,char* type)
 {
    //creation matrice 
@@ -105,7 +105,7 @@ matrices creation(int n, int m, char* nom,matrices ptr,char* type)
    return temp;
 }
 
-//fpriv:creation matrice pleine
+//fpriv: creation matrice pleine
 double** creation_plein(int n, int m)
 {
 int i;
@@ -140,7 +140,7 @@ for (i = 0; i < n; i++) {
     return mat;
 }
 
-//fpub:Fonction destruction
+//fpub: fonction destruction
 matrices destruction(matrices top, char* nom)
 {
 	//recherche de la matrice
@@ -171,9 +171,9 @@ matrices destruction(matrices top, char* nom)
 	return top;
 }
 
-//fpub:Fonction produit
+//fpub: fonction produit
 matrices produit(char* tab1,char* tab2,char* nom,matrices ptr)
-{  
+{
 	//assignation a ta1 et ta2 des matrices qu'on multiplie
 	matrices ta1=NULL,ta2=NULL;
 	ta1=recherche(ptr,tab1);
@@ -189,7 +189,7 @@ matrices produit(char* tab1,char* tab2,char* nom,matrices ptr)
 	return ptr;
 }
    //creation en fonction du type
-	matrices res = creation(ta1->n, ta2->m, nom,ptr,"plein");
+	matrices res = creation(ta1->n, ta2->m,nom,ptr,"plein");
 	if (!strcmp(ta1->type, "plein")) {
 		produit_plein(ta1->mat, ta2->mat, res->mat, ta1->n, ta1->m, ta2->m);
 }
@@ -199,7 +199,7 @@ matrices produit(char* tab1,char* tab2,char* nom,matrices ptr)
 return res;
 }
 
-//fpriv:produit matrice pleine
+//fpriv: produit matrice pleine
 void produit_plein(double** ta1, double** ta2, double** res, int n, int m, int m2) {
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < m2; j++) {
@@ -211,7 +211,7 @@ void produit_plein(double** ta1, double** ta2, double** res, int n, int m, int m
     }
 }
 
-//fpriv:produit matrice symetriques
+//fpriv: produit matrice symetriques
 void produit_sym(double** ta1, double** ta2, double** res, int n, int m2) {
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < m2; j++) {
@@ -309,18 +309,18 @@ matrices sousmatrice_sym (matrices ptr,char* nomK,int *f,int nbr_f,char* nom2)
 {
 	int i,j;
    matrices K=recherche(ptr,nomK);
-	matrices Kff=creation(nbr_f, nbr_f, nom2,ptr, "sym");
+	matrices Kfr=creation(nbr_f, nbr_f, nom2,ptr, "sym");
 	
 	for(i=0;i<nbr_f;i++)
 		for(j=0;j<nbr_f;j++)
 		{
 			if(f[i]<=f[j])
-				Kff->mat[i][j]=K->mat[f[i]][f[j]];
+				Kfr->mat[i][j]=K->mat[f[i]][f[j]];
 			else
-				Kff->mat[i][j]=K->mat[f[j]][f[i]];
+				Kfr->mat[i][j]=K->mat[f[j]][f[i]];
 		}
 	
-	return Kff;
+	return Kfr;
 }
 
 //fpub : sous-matrice
@@ -358,7 +358,7 @@ matrices sousvecteur(matrices ptr,char *nom1, int *r, int nbr_r, char *nom2)
 
 
 //fpub : permet la résolution de l'équation AX=B
-void resolutioneq(matrices ptr, char *nom1, char *nom2, char *nom3)
+matrices resolutioneq(matrices ptr, char *nom1, char *nom2, char *nom3)
 {
 	matrices ptr1= recherche(ptr,nom1);
 	matrices ptr2=recherche(ptr,nom2);
@@ -370,4 +370,5 @@ void resolutioneq(matrices ptr, char *nom1, char *nom2, char *nom3)
 		else
 			solvesym(ptr1->mat, ptr2->mat, ptr3->mat, ptr1->n, ptr2->m);
 	}
+	return ptr3;
 }
