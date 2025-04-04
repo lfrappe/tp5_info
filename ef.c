@@ -8,7 +8,7 @@
 #include "calcul.h"
 
 //fpub:affectation des resultats de F dans les noeuds
-void affecterresults(char* F, struct noeud *noeuds,matrices ptr)
+void affecterresults(char* F, struct noeud *noeuds, matrices ptr)
    {
 	int p;
 	//recherche F
@@ -34,12 +34,12 @@ void affichageliste(int nnoe,struct noeud *noeuds)
 }
 
 //fpub:construction de K
-matrices assemblageK(int nnoe, int nelt, struct element *elements, char* nmK,matrices ptr,char* symp)
+matrices assemblageK(int nnoe, int nelt, struct element *elements, char* nomK, matrices ptr,char* type)
 {
 	int p, i, j;
-	matrices K = creation(nnoe,nnoe,nmK,ptr,symp);
+	matrices K = creation(nnoe,nnoe,nomK,ptr,type);
 	//cas ou K est matrice pleine
-	if(!strcmp(symp,"plein")){
+	if(!strcmp(type,"plein")){
 		for (p=0; p<nelt; p++){
 			//definition i et j
 			i = elements[p].k[0] - 1;
@@ -51,7 +51,7 @@ matrices assemblageK(int nnoe, int nelt, struct element *elements, char* nmK,mat
 			K->mat[j][j] += elements[p].raid;
 }}
 	//cas ou K est matrice symetrique
-	else if(!strcmp(symp,"sym")){
+	else if(!strcmp(type,"sym")){
 		int min, max;
 		for (p=0; p<nelt; p++){
 			//definition i et j
@@ -76,10 +76,10 @@ return K;
 }
 
 //fpub:construction de U
-matrices assemblageU(int nnoe, struct noeud *noeuds, char* nmU,matrices ptr)
+matrices assemblageU(int nnoe, struct noeud *noeuds, char* nomU, matrices ptr)
    {
 	int p;
-	matrices U = creation(nnoe,1,nmU,ptr,"plein");
+	matrices U = creation(nnoe,1,nomU,ptr,"plein");
 	//copie données des noeuds dans U
 	for (p=0; p<nnoe; p++)
     {
@@ -113,8 +113,7 @@ struct element* entreelmt(int nelt, int nnoe)
 }
 return elements;
 }
-
-//fpub: entrée par l'utilisateur des données des noeuds
+//fpub: entrée par l'utilisateur des données des noeuds (version sans inconnues)
 struct noeud* entrenoeud(int nnoe)
 {
 	int n=nnoe;
@@ -128,6 +127,62 @@ struct noeud* entrenoeud(int nnoe)
 		printf("deplacement du noeud %d",p+1);
 		scanf("%d", &noeuds[p].dep);
 }
+return noeuds;
+}
+
+//fpub: entrée par l'utilisateur des données des noeuds (version inconnues)
+struct noeud* entrenoeud2(int nnoe, struct donnee *RF)
+{
+	char depeff[20];
+	int n=nnoe;
+	int p;
+
+	
+	//tentative structure r et f 
+	int *ftemp= (int*)malloc(nnoe*sizeof(int));
+	int *rtemp= (int*)malloc(nnoe*sizeof(int));
+
+	RF->nbr_r=0;
+	RF->nbr_f=0;
+
+
+	
+	//creation du tableau noeud vide
+	struct noeud* noeuds=NULL;
+	noeuds= malloc(n*sizeof(struct noeud));
+	//entrée des données des noeuds
+	for ( p=0;p<n;p++){
+		//demande si on connait les deplacements ou efforts
+		printf("connait on le deplacement ou effort du noeud? (d/e)");
+		scanf("%s",depeff);
+		//boucle pour clarification en cas d'erreur de l'utilisateur
+		while (strcmp(depeff,"e")!=0 && strcmp(depeff,"d")!=0){
+			printf("tapez e pour effort ou d pour deplacement");
+			scanf("%s",depeff);
+		}
+		noeuds[p].num=p+1;
+		//cas ou on demande un deplacement
+		if (strcmp(depeff,"d")==0){
+		printf("deplacement du noeud %d",p+1);
+		scanf("%d", &noeuds[p].dep);
+
+		
+		rtemp[RF->nbr_r]=p;
+		RF->nbr_r+=1;
+		}
+		//cas ou on demande un effort
+		else{
+		printf("effort du noeud %d",p+1);
+		scanf("%lf", &noeuds[p].eff);
+		noeuds[p].dep=0;
+
+
+		ftemp[RF->nbr_f]=p;
+		RF->nbr_f+=1;
+		}
+}
+	RF->f=ftemp;
+	RF->r=rtemp;
 return noeuds;
 }
 
@@ -147,4 +202,24 @@ int taillenoeud()
 	printf("nombre de noeuds");
 	scanf("%d", &n);
 	return n;
+}
+
+//fpub: construction de U2
+matrices assemblageU2(matrices ptr, char *Uf, char *U, int *f, int nbr_f)
+{
+	matrices ptr1=recherche(ptr, "U");
+	matrices ptr2=recherche(ptr, "Uf");
+	matrices ptr3=creation(ptr1->n, ptr1->m, "U2", ptr, ptr1->type);
+	int i;
+	
+	for (i=0;i<ptr1->n;i++)
+	{
+		ptr3->mat[i][0]=ptr1->mat[i][0];
+	}
+	
+	for (i=0;i<nbr_f;i++)
+	{
+		ptr3->mat[f[i]][0]=ptr2->mat[i][0];
+	}
+	return ptr3;
 }
