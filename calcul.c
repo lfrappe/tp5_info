@@ -325,13 +325,13 @@ matrices sousmatrice(matrices ptr,char *nomK, int *r, int nbr_r, int *f,int nbr_
 	matrices K = recherche(ptr,nomK);
 	matrices Krf;
 	
-	if(!strcmp(K->type,"plein")&&!strcmp(K->type,"plein"))
+	if(!strcmp(K->type,"plein"))
 		Krf= sousmatrice_plein_vers_plein(ptr,nomK, r, nbr_r, f, nbr_f, nom2);
    
-	else if(!strcmp(K->type,"plein")&&!strcmp(K->type,"sym"))
+	else if(!strcmp(K->type,"sym")&&!strcmp(type,"plein"))
 		Krf = sousmatrice_sym_vers_plein(ptr,nomK, r, nbr_r, f, nbr_f, nom2);
 		
-	else if (!strcmp(K->type,"sym"))
+	else if (!strcmp(K->type,"sym")&&!strcmp(type,"sym"))
 		Krf = sousmatrice_sym(ptr,nomK, f, nbr_f, nom2);	
 	
 	return Krf;
