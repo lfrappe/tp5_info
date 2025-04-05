@@ -358,14 +358,17 @@ double** cavamarcher(double** mat1,double** mat2, int n, int m)
 
    for(i=0;i<n;i++)
    {
-		for(j=0;j<m-i;j++)
+		for(j=0;j<m;j++)
 		{
+			printf("%d,%d//",i,j);
          if(i<=j)
          {
 				mat2[i][j]=mat1[i][j-i];
+				
          }
-         
+
 		}
+		printf("\n");
 	}
 return mat2;
 }
