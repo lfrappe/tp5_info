@@ -170,9 +170,9 @@ matrices destruction(matrices top, char* nom)
 	return top;
 }
 
-//fpub: fonction produit
+//fpub:Fonction produit
 matrices produit(char* tab1,char* tab2,char* nom,matrices ptr)
-{
+{  
 	//assignation a ta1 et ta2 des matrices qu'on multiplie
 	matrices ta1=NULL,ta2=NULL;
 	ta1=recherche(ptr,tab1);
@@ -188,7 +188,7 @@ matrices produit(char* tab1,char* tab2,char* nom,matrices ptr)
 	return ptr;
 }
    //creation en fonction du type
-	matrices res = creation(ta1->n, ta2->m,nom,ptr,"plein");
+	matrices res = creation(ta1->n, ta2->m, nom,ptr,"plein");
 	if (!strcmp(ta1->type, "plein")) {
 		produit_plein(ta1->mat, ta2->mat, res->mat, ta1->n, ta1->m, ta2->m);
 }
@@ -198,7 +198,7 @@ matrices produit(char* tab1,char* tab2,char* nom,matrices ptr)
 return res;
 }
 
-//fpriv: produit matrice pleine
+//fpriv:produit matrice pleine
 void produit_plein(double** ta1, double** ta2, double** res, int n, int m, int m2) {
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < m2; j++) {
@@ -210,17 +210,17 @@ void produit_plein(double** ta1, double** ta2, double** res, int n, int m, int m
     }
 }
 
-//fpriv: produit matrice symetriques
+//fpriv:produit matrice symetriques
 void produit_sym(double** ta1, double** ta2, double** res, int n, int m2) {
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < m2; j++) {
             res[i][j] = 0;
             for (int k = 0; k <= i; k++) {
-                res[i][j] += ta1[i][k] * ta2[k][j];
+                res[i][j] += ta1[k][i-k] * ta2[k][j];
             }
             for (int k = i + 1; k < n; k++) {
-                res[i][j] += ta1[k][i] * ta2[k][j];
-              
+                res[i][j] += ta1[i][k-i] * ta2[k][j];
+               
             }
         }
     }
@@ -273,12 +273,12 @@ matrices sousmatrice_plein_vers_plein(matrices ptr,char* nomK,int *r,int nbr_r,i
   matrices K=recherche(ptr, nomK);
 	matrices Krf=creation(nbr_f, nbr_r, nom2,ptr, "plein");
 	
-	for(i=0;i<nbr_r;i++)
+	for(i=0;i<nbr_f;i++)
 		{
-		for(j=0;j<nbr_f;j++)
+		for(j=0;j<nbr_r;j++)
 			{
 
-				Krf->mat[i][j]=K->mat[r[i]][f[j]];
+				Krf->mat[i][j]=K->mat[f[i]][r[j]];
 
 			}}	
 	return Krf;
