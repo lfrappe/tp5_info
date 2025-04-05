@@ -42,11 +42,11 @@ if (inc==1)
 
     //sous-matrices
     //Kfr
-    ptr = sousmatrice(ptr,"K",RF->r,RF->nbr_r,RF->f,RF->nbr_f,"Kfr");
+    ptr = sousmatrice(ptr,"K",RF->r,RF->nbr_r,RF->f,RF->nbr_f,"Kfr", "plein");
     affichage(recherche(ptr, "Kfr"));
     
     //Kff
-    ptr=sousmatrice(ptr,"K",RF->f,RF->nbr_f,RF->f, RF->nbr_f,"Kff");
+    ptr=sousmatrice(ptr,"K",RF->f,RF->nbr_f,RF->f, RF->nbr_f,"Kff","sym");
     affichage(recherche(ptr, "Kff"));
     
     //Ur
