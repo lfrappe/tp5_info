@@ -36,7 +36,6 @@ void affichage(matrices tab1)
   }
      //saut de lignes pour la présentation
      printf("\n\n");
-     
      return;
 }
 
@@ -217,11 +216,11 @@ void produit_sym(double** ta1, double** ta2, double** res, int n, int m2) {
         for (int j = 0; j < m2; j++) {
             res[i][j] = 0;
             for (int k = 0; k <= i; k++) {
-                res[i][j] += ta1[k][i-k] * ta2[k][j];
+                res[i][j] += ta1[i][k] * ta2[k][j];
             }
             for (int k = i + 1; k < n; k++) {
-                res[i][j] += ta1[i][k-i] * ta2[k][j];
-               
+                res[i][j] += ta1[k][i] * ta2[k][j];
+              
             }
         }
     }
@@ -274,12 +273,12 @@ matrices sousmatrice_plein_vers_plein(matrices ptr,char* nomK,int *r,int nbr_r,i
   matrices K=recherche(ptr, nomK);
 	matrices Krf=creation(nbr_f, nbr_r, nom2,ptr, "plein");
 	
-	for(i=0;i<nbr_f;i++)
+	for(i=0;i<nbr_r;i++)
 		{
-		for(j=0;j<nbr_r;j++)
+		for(j=0;j<nbr_f;j++)
 			{
 
-				Krf->mat[i][j]=K->mat[f[i]][r[j]];
+				Krf->mat[i][j]=K->mat[r[i]][f[j]];
 
 			}}	
 	return Krf;
@@ -290,17 +289,16 @@ matrices sousmatrice_plein_vers_plein(matrices ptr,char* nomK,int *r,int nbr_r,i
 matrices sousmatrice_sym_vers_plein(matrices ptr,char* nomK, int *r,int nbr_r,int *f,int nbr_f, char* nom2)
 {
 	int i,j;
-   matrices K=recherche(ptr, nomK);
+    matrices K=recherche(ptr, nomK);
 	matrices Krf=creation(nbr_f, nbr_r, nom2,ptr, "plein");
-	for(i=0;i<nbr_f;i++)
-		for(j=0;j<nbr_r;j++)
+	for(i=0;i<nbr_r;i++)
+		for(j=0;j<nbr_f;j++)
 		{
 			if(r[i]<=f[j])
-				Krf->mat[i][j]=K->mat[r[j]][f[i]];
+				Krf->mat[i][j]=K->mat[r[i]][f[j]];
 			else
-				Krf->mat[i][j]=K->mat[f[i]][r[j]];
+				Krf->mat[i][j]=K->mat[f[j]][r[i]];
 		}
-	
 	return Krf;
 }
 
@@ -308,23 +306,21 @@ matrices sousmatrice_sym_vers_plein(matrices ptr,char* nomK, int *r,int nbr_r,in
 matrices sousmatrice_sym (matrices ptr,char* nomK,int *f,int nbr_f,char* nom2)
 {
 	int i,j;
-   matrices K=recherche(ptr,nomK);
-	matrices Kfr=creation(nbr_f, nbr_f, nom2,ptr, "sym");
+    matrices K=recherche(ptr,nomK);
+	matrices Kff=creation(nbr_f, nbr_f, nom2,ptr, "sym");
 	
 	for(i=0;i<nbr_f;i++)
-		for(j=0;j<nbr_f;j++)
+		for(j=0;j<nbr_f-i;j++)
 		{
-			if(f[i]<=f[j])
-				Kfr->mat[i][j]=K->mat[f[i]][f[j]];
-			else
-				Kfr->mat[i][j]=K->mat[f[j]][f[i]];
+			//if(f[i]<=f[j])
+				Kff->mat[i][j]=K->mat[f[i]][f[i+j]-f[i]];
 		}
 	
-	return Kfr;
+	return Kff;
 }
 
 //fpub : sous-matrice
-matrices sousmatrice(matrices ptr,char *nomK, int *r, int nbr_r, int *f,int nbr_f, char *nom2)
+matrices sousmatrice(matrices ptr,char *nomK, int *r, int nbr_r, int *f,int nbr_f, char *nom2, char* type)
 {
 	matrices K = recherche(ptr,nomK);
 	matrices Krf;
