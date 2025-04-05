@@ -65,7 +65,6 @@ if (inc==1)
     ptr=difference("Ff", "E", "B",ptr);
     affichage(recherche(ptr, "B"));
 
-    
     //resoudre systeme eq AX=B
     ptr=resolutioneq(ptr,"Kff", "B", "Uf"); 
 	affichage(recherche(ptr, "Uf"));
