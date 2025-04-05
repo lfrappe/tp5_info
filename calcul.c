@@ -309,13 +309,12 @@ matrices sousmatrice_sym (matrices ptr,char* nomK,int *f,int nbr_f,char* nom2)
     matrices K=recherche(ptr,nomK);
 	matrices Kff=creation(nbr_f, nbr_f, nom2,ptr, "sym");
 	
-	for(i=0;i<nbr_f;i++)
+	for(i=0;i<nbr_f;i++){
 		for(j=0;j<nbr_f-i;j++)
 		{
-			//if(f[i]<=f[j])
 				Kff->mat[i][j]=K->mat[f[i]][f[i+j]-f[i]];
 		}
-	
+	}
 	return Kff;
 }
 
@@ -351,20 +350,55 @@ matrices sousvecteur(matrices ptr,char *nom1, int *r, int nbr_r, char *nom2)
 	return ptr2;
 }
 
+//fpriv:tagrossetante
+double** cavamarcher(double** mat1,double** mat2, int n, int m)
+{
+   int i;
+   int j;
 
-
+   for(i=0;i<n;i++)
+   {
+		for(j=0;j<m-i;j++)
+		{
+         if(i<=j)
+         {
+				mat2[i][j]=mat1[i][j-i];
+         }
+         
+		}
+	}
+return mat2;
+}
 //fpub : permet la résolution de l'équation AX=B
 matrices resolutioneq(matrices ptr, char *nom1, char *nom2, char *nom3)
 {
 	matrices ptr1= recherche(ptr,nom1);
 	matrices ptr2=recherche(ptr,nom2);
 	matrices ptr3=creation( ptr1->n,1, nom3,ptr, "plein");
+
 	if(ptr1!=NULL)
 		{
 			if (!strcmp(ptr1->type, "plein"))
 			solveplein(ptr1->mat, ptr2->mat, ptr3->mat, ptr1->n, ptr2->m);
-		else
-			solvesym(ptr1->mat, ptr2->mat, ptr3->mat, ptr1->n, ptr2->m);
+		else{
+         double** mattemp = (double**)malloc(ptr1->n * sizeof(double*));
+         for(int i = 0; i < ptr1->n; i++)
+            {
+                mattemp[i] = (double*)malloc(ptr1->m * sizeof(double));
+         }
+            
+         cavamarcher(ptr1->mat,mattemp,ptr1->n,ptr1->m);
+         
+         
+			solvesym(mattemp, ptr2->mat, ptr3->mat, ptr1->n, ptr2->m);
+         
+         
+         for(int i = 0; i < ptr1->n; i++)
+            {
+                free(mattemp[i]);
+            }
+            free(mattemp);
 	}
+   }
 	return ptr3;
 }
