@@ -52,7 +52,7 @@ matrices destruction(matrices top, char* nom);
 matrices sousmatrice_plein_vers_plein(matrices ptr,char* nomK,int *r,int nbr_r,int *f,int nbr_f,char *nom2);
 matrices sousmatrice_sym_vers_plein(matrices ptr,char* nomK, int *r,int nbr_r,int *f,int nbr_f, char* nom2);
 matrices sousmatrice_sym (matrices ptr,char* nomK,int *f,int nbr_f,char* nom2);
-matrices sousmatrice(matrices ptr,char *nom1, int *r, int nbr_r, int *f,int nbr_f, char *nom2);
+matrices sousmatrice(matrices ptr,char *nomK, int *r, int nbr_r, int *f,int nbr_f, char *nom2, char* type);
 
 //sous-vecteur
 matrices sousvecteur(matrices ptr,char *nom1, int *r, int nbr, char *nom2);
