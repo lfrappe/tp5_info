@@ -8,17 +8,25 @@
 #include "calcul.h"
 
 //fpub:affectation des resultats de F dans les noeuds
-void affecterresults(char* F, struct noeud *noeuds, matrices ptr)
+void affecterresults(char* F,char* U, struct noeud *noeuds, matrices ptr)
    {
 	int p;
-	//recherche F
+	//recherche F et U
 	matrices matf;
+   matrices matU;
 	matf=recherche(ptr, F);
+   matU=recherche(ptr, U);
 	//copie des données de F dans les noeuds
 	for (p=0; p<matf->n; p++)
 	{
 		noeuds[p].eff = matf->mat[p][0];
 	}
+   //copie des données de U dans les noeuds
+	for (p=0; p<matU->n; p++)
+	{
+		noeuds[p].dep = matU->mat[p][0];
+	}
+   
 }
 
 //fpub:affichage d'une liste
@@ -26,7 +34,7 @@ void affichageliste(int nnoe,struct noeud *noeuds)
 {
 	int i;
 	for (i=0;i<nnoe;i++){
-		printf("( (%d) (%d) (%lf) )",noeuds[i].num,noeuds[i].dep,noeuds[i].eff);
+		printf("( (%d) (%lf) (%lf) )",noeuds[i].num,noeuds[i].dep,noeuds[i].eff);
 		//sauts de lignes pour lisibilité
 		printf("\n");
 	}
@@ -99,14 +107,14 @@ struct element* entreelmt(int nelt, int nnoe)
 	//entrée des données des elements
 	for ( p=0;p<n;p++){
 		elements[p].num=p+1;
-		printf("raideur de l element %d (double)",p+1);
+		printf("raideur de l element %d: ",p+1);
 		scanf("%lf", &elements[p].raid);
-		printf("connections de l element %d",p+1);
+		printf("connections de l element %d: ",p+1);
 		//boucle pour le cas ou l'utilisateur rentre des mauvaises valeurs
 		do{
-		printf("entrez la premiere connection");
+		printf("entrez la premiere connection ");
 		scanf("%d", &elements[p].k[0]);
-		printf("entrez la deuxieme connection");
+		printf("entrez la deuxieme connection ");
 		scanf("%d", &elements[p].k[1]);
 		}while (0>=elements[p].k[0] || nnoe<elements[p].k[0] || 0>=elements[p].k[1] || nnoe<elements[p].k[1] );
 		printf("\n");
@@ -124,8 +132,9 @@ struct noeud* entrenoeud(int nnoe)
 	//entrée des données des noeuds
 	for ( p=0;p<n;p++){
 		noeuds[p].num=p+1;
-		printf("deplacement du noeud %d",p+1);
-		scanf("%d", &noeuds[p].dep);
+		printf("deplacement du noeud %d ",p+1);
+		scanf("%lf", &noeuds[p].dep);
+      printf("\n");
 }
 return noeuds;
 }
@@ -153,29 +162,29 @@ struct noeud* entrenoeud2(int nnoe, struct donnee *RF)
 	//entrée des données des noeuds
 	for ( p=0;p<n;p++){
 		//demande si on connait les deplacements ou efforts
-		printf("connait on le deplacement ou effort du noeud %d? (d/e)",p+1);
+		printf("connait on le deplacement ou effort du noeud %d? (d/e): ",p+1);
 		scanf("%s",depeff);
 		//boucle pour clarification en cas d'erreur de l'utilisateur
 		while (strcmp(depeff,"e")!=0 && strcmp(depeff,"d")!=0){
-			printf("tapez e pour effort ou d pour deplacement du noeud %d",p+1);
+			printf("tapez e pour effort ou d pour deplacement du noeud %d: ",p+1);
 			scanf("%s",depeff);
 		}
 		noeuds[p].num=p+1;
 		//cas ou on demande un deplacement
 		if (strcmp(depeff,"d")==0){
-		printf("deplacement du noeud %d",p+1);
-		scanf("%d", &noeuds[p].dep);
+		printf("deplacement du noeud %d ",p+1);
+		scanf("%lf", &noeuds[p].dep);
+      printf("\n");
 
-		
 		rtemp[RF->nbr_r]=p;
 		RF->nbr_r+=1;
 		}
 		//cas ou on demande un effort
 		else{
-		printf("effort du noeud %d",p+1);
+		printf("effort du noeud %d ",p+1);
 		scanf("%lf", &noeuds[p].eff);
+      printf("\n");
 		noeuds[p].dep=0;
-
 
 		ftemp[RF->nbr_f]=p;
 		RF->nbr_f+=1;
@@ -236,4 +245,88 @@ matrices assemblageU2(matrices ptr, char *Uf, char *U, int *f, int nbr_f)
 		ptr3->mat[f[i]][0]=ptr2->mat[i][0];
 	}
 	return ptr3;
+}
+
+//fpub : sous vecteur
+matrices sousvecteur(matrices ptr,char *nom1, int *r, int nbr_r, char *nom2)
+{
+	matrices ptr1=recherche(ptr,nom1);
+	matrices ptr2=creation(nbr_r, 1,nom2,ptr ,"plein");
+	int i;
+	//copie des valeures de nom1,aux indices de r, dans notre vecteur
+	for(i=0; i<nbr_r; i++)
+	{
+		ptr2->mat[i][0]=ptr1->mat[r[i]][0];
+	}
+	return ptr2;
+}
+
+//fpriv : extraction plein vers plein 
+matrices sousmatrice_plein_vers_plein(matrices ptr,char* nomK,int *r,int nbr_r,int *f,int nbr_f,char *nom2)
+{
+	int i,j;
+  matrices K=recherche(ptr, nomK);
+	matrices Krf=creation(nbr_f, nbr_r, nom2,ptr, "plein");
+	
+	for(i=0;i<nbr_f;i++)
+		{
+		for(j=0;j<nbr_r;j++)
+			{
+
+				Krf->mat[i][j]=K->mat[f[i]][r[j]];
+
+			}}	
+	return Krf;
+
+}
+
+//fpriv : extraction sym vers plein
+matrices sousmatrice_sym_vers_plein(matrices ptr,char* nomK, int *r,int nbr_r,int *f,int nbr_f, char* nom2)
+{
+	int i,j;
+    matrices K=recherche(ptr, nomK);
+	matrices Krf=creation(nbr_f, nbr_r, nom2,ptr, "plein");
+	for(i=0;i<nbr_r;i++)
+		for(j=0;j<nbr_f;j++)
+		{
+			if(r[i]<=f[j])
+				Krf->mat[i][j]=K->mat[r[i]][f[j]];
+			else
+				Krf->mat[i][j]=K->mat[f[j]][r[i]];
+		}
+	return Krf;
+}
+
+//fpriv : extraction sym
+matrices sousmatrice_sym (matrices ptr,char* nomK,int *f,int nbr_f,char* nom2)
+{
+	int i,j;
+    matrices K=recherche(ptr,nomK);
+	matrices Kff=creation(nbr_f, nbr_f, nom2,ptr, "sym");
+	
+	for(i=0;i<nbr_f;i++){
+		for(j=0;j<nbr_f-i;j++)
+		{
+				Kff->mat[i][j]=K->mat[f[i]][f[i+j]-f[i]];
+		}
+	}
+	return Kff;
+}
+
+//fpub : sous-matrice
+matrices sousmatrice(matrices ptr,char *nomK, int *r, int nbr_r, int *f,int nbr_f, char *nom2, char* type)
+{
+	matrices K = recherche(ptr,nomK);
+	matrices Krf;
+	
+	if(!strcmp(K->type,"plein"))
+		Krf= sousmatrice_plein_vers_plein(ptr,nomK, r, nbr_r, f, nbr_f, nom2);
+   
+	else if(!strcmp(K->type,"sym")&&!strcmp(type,"plein"))
+		Krf = sousmatrice_sym_vers_plein(ptr,nomK, r, nbr_r, f, nbr_f, nom2);
+		
+	else if (!strcmp(K->type,"sym")&&!strcmp(type,"sym"))
+		Krf = sousmatrice_sym(ptr,nomK, f, nbr_f, nom2);	
+	
+	return Krf;
 }
