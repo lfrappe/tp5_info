@@ -226,35 +226,28 @@ void produit_sym(double** ta1, double** ta2, double** res, int n, int m2) {
     }
 }
 
-//
-//
-//
-//ajouts TD5
-//
-//
-//
-
-
 //fpub : difference C = A - B 
 matrices difference(char* tab1, char* tab2,char* nom,matrices ptr)
 {  
    int i,j;
+   //creation matrices
    matrices ta1=NULL,ta2=NULL;
    ta1=recherche(ptr,tab1);
    ta2=recherche(ptr,tab2);
-   
-      if (ta1 == NULL || ta2 == NULL) {
+   //verification matrices existes
+    if (ta1 == NULL || ta2 == NULL) {
     printf(" une des matrices n'existe pas.\n");
     return ptr;
 }
+   //verification dimensions
 if (ta1->n != ta2->n || ta1->m != ta2->m) {
     printf("dimensions incompatibles pour la soustraction\n");
     return ptr;
 }
 
-
+ //creation matrice resultat
    matrices res = creation(ta1->n, ta2->m, nom,ptr,"plein");
-
+   //calcul
    for(i = 0; i < ta1->n; i++)
   {
     for(j = 0; j < ta2->m; j++)
@@ -266,92 +259,10 @@ if (ta1->n != ta2->n || ta1->m != ta2->m) {
    
 }
 
-//fpriv : extraction plein vers plein 
-matrices sousmatrice_plein_vers_plein(matrices ptr,char* nomK,int *r,int nbr_r,int *f,int nbr_f,char *nom2)
-{
-	int i,j;
-  matrices K=recherche(ptr, nomK);
-	matrices Krf=creation(nbr_f, nbr_r, nom2,ptr, "plein");
-	
-	for(i=0;i<nbr_f;i++)
-		{
-		for(j=0;j<nbr_r;j++)
-			{
-
-				Krf->mat[i][j]=K->mat[f[i]][r[j]];
-
-			}}	
-	return Krf;
-
-}
-
-//fpriv : extraction sym vers plein
-matrices sousmatrice_sym_vers_plein(matrices ptr,char* nomK, int *r,int nbr_r,int *f,int nbr_f, char* nom2)
-{
-	int i,j;
-    matrices K=recherche(ptr, nomK);
-	matrices Krf=creation(nbr_f, nbr_r, nom2,ptr, "plein");
-	for(i=0;i<nbr_r;i++)
-		for(j=0;j<nbr_f;j++)
-		{
-			if(r[i]<=f[j])
-				Krf->mat[i][j]=K->mat[r[i]][f[j]];
-			else
-				Krf->mat[i][j]=K->mat[f[j]][r[i]];
-		}
-	return Krf;
-}
-
-//fpriv : extraction sym
-matrices sousmatrice_sym (matrices ptr,char* nomK,int *f,int nbr_f,char* nom2)
-{
-	int i,j;
-    matrices K=recherche(ptr,nomK);
-	matrices Kff=creation(nbr_f, nbr_f, nom2,ptr, "sym");
-	
-	for(i=0;i<nbr_f;i++){
-		for(j=0;j<nbr_f-i;j++)
-		{
-				Kff->mat[i][j]=K->mat[f[i]][f[i+j]-f[i]];
-		}
-	}
-	return Kff;
-}
-
-//fpub : sous-matrice
-matrices sousmatrice(matrices ptr,char *nomK, int *r, int nbr_r, int *f,int nbr_f, char *nom2, char* type)
-{
-	matrices K = recherche(ptr,nomK);
-	matrices Krf;
-	
-	if(!strcmp(K->type,"plein"))
-		Krf= sousmatrice_plein_vers_plein(ptr,nomK, r, nbr_r, f, nbr_f, nom2);
-   
-	else if(!strcmp(K->type,"sym")&&!strcmp(type,"plein"))
-		Krf = sousmatrice_sym_vers_plein(ptr,nomK, r, nbr_r, f, nbr_f, nom2);
-		
-	else if (!strcmp(K->type,"sym")&&!strcmp(type,"sym"))
-		Krf = sousmatrice_sym(ptr,nomK, f, nbr_f, nom2);	
-	
-	return Krf;
-}
-
-//fpub : sous vecteur
-matrices sousvecteur(matrices ptr,char *nom1, int *r, int nbr_r, char *nom2)
-{
-	matrices ptr1=recherche(ptr,nom1);
-	matrices ptr2=creation(nbr_r, 1,nom2,ptr ,"plein");
-	int i;
-	
-	for(i=0; i<nbr_r; i++)
-	{
-		ptr2->mat[i][0]=ptr1->mat[r[i]][0];
-	}
-	return ptr2;
-}
-
-//fpriv:tagrossetante
-double** cavamarcher(double** mat1,double** mat2, int n, int m)
+//fpriv:changement du fonctionnement des matrices symetriques      
+/////notre systeme de matrice symetrique ne fonctionne pas avec le solvesym de libmat.a
+/////cette fonction permet de transitionner de notre systeme a celui de libmat.h en changeant les indices
+double** changementindices(double** mat1,double** mat2, int n, int m)
 {
    int i;
    int j;
@@ -360,18 +271,16 @@ double** cavamarcher(double** mat1,double** mat2, int n, int m)
    {
 		for(j=0;j<m;j++)
 		{
-			printf("%d,%d//",i,j);
          if(i<=j)
          {
 				mat2[i][j]=mat1[i][j-i];
-				
          }
-
 		}
 		printf("\n");
 	}
 return mat2;
 }
+
 //fpub : permet la résolution de l'équation AX=B
 matrices resolutioneq(matrices ptr, char *nom1, char *nom2, char *nom3)
 {
@@ -381,21 +290,23 @@ matrices resolutioneq(matrices ptr, char *nom1, char *nom2, char *nom3)
 
 	if(ptr1!=NULL)
 		{
+         //cas matrices pleines
 			if (!strcmp(ptr1->type, "plein"))
 			solveplein(ptr1->mat, ptr2->mat, ptr3->mat, ptr1->n, ptr2->m);
 		else{
+         //cas matrices symetriques
+         //creation matrice temporaire pour en changer les indices
          double** mattemp = (double**)malloc(ptr1->n * sizeof(double*));
          for(int i = 0; i < ptr1->n; i++)
             {
                 mattemp[i] = (double*)malloc(ptr1->m * sizeof(double));
          }
             
-         cavamarcher(ptr1->mat,mattemp,ptr1->n,ptr1->m);
-         
-         
+         // resolution equation
+         changementindices(ptr1->mat,mattemp,ptr1->n,ptr1->m);
 			solvesym(mattemp, ptr2->mat, ptr3->mat, ptr1->n, ptr2->m);
          
-         
+         //liberation memoire de mattemp
          for(int i = 0; i < ptr1->n; i++)
             {
                 free(mattemp[i]);
