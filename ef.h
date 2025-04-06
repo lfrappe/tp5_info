@@ -15,7 +15,7 @@ struct element
 struct noeud
    {
       int num;
-      int dep;
+      double dep;
       double eff;
 };
 
@@ -37,7 +37,7 @@ matrices assemblageK(int nnoe, int nelt, struct element *elements, char* nmK,mat
 // assemblage U
 matrices assemblageU(int nnoe, struct noeud *noeuds, char* nmU,matrices ptr);
 // affectation resultats
-void affecterresults(char* F, struct noeud *noeuds, matrices ptr);
+void affecterresults(char* F,char* U, struct noeud *noeuds, matrices ptr);
 // affiche_liste
 void affichageliste(int nnoe,struct noeud *noeuds);
 //entrée taille element
@@ -48,6 +48,10 @@ int taillenoeud();
 matrices assemblageU2(matrices ptr, char *Uf, char *U, int *f, int nbr_f);
 //asemblage Ff
 matrices assemblageFf(matrices ptr, int nbr_f, int *f, struct noeud* noeuds);
+//sous-matrices
+matrices sousmatrice(matrices ptr,char *nomK, int *r, int nbr_r, int *f,int nbr_f, char *nom2, char* type);
+//sous-vecteur
+matrices sousvecteur(matrices ptr,char *nom1, int *r, int nbr, char *nom2);
 
 
 #endif /* ef_h */
